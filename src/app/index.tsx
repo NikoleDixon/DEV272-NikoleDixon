@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 // Week 1: change the two lines marked 👇, run the app, commit, push.
 export default function Index() {
   // 👇 Week 1: replace with your name
-  const studentName = "Your Name";
+  const studentName = "Nikole Dixon";
   // 👇 Week 1: replace with something you want to build this quarter
-  const appIdea = "an app idea I have";
+  const appIdea = "a bullet journaling app. (or an app for a pool service company)";
 
   return (
     <View style={styles.container}>
