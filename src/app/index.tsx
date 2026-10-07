@@ -1,49 +1,68 @@
 import { useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { FlatList, Platform, Pressable, StyleSheet, Text, TextInput, useColorScheme, View } from "react-native";
+import { colors, Palette } from "./constants/colors";
 import { Tracker, trackers } from "./data/trackers";
 
 export default function Index() {
+  const c= colors[useColorScheme() === "dark" ? "dark" : "light"];
+
   return (
     <FlatList 
       data={trackers}
       keyExtractor={(t) => t.id}
-      renderItem={({ item }) => <TrackerRow tracker={item} />}
-      ListHeaderComponent={<Header />}
+      renderItem={({ item }) => <TrackerRow tracker={item} c={c} />}
+      ListHeaderComponent={<Header c={c}/>}
       contentContainerStyle={styles.list}
     />
   );
 }
 
-function Header() {
+function Header({ c }: { c: Palette }) {
   const [query, setQuery] = useState<string>("");
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bullet Journal</Text>
+      <Text style={[styles.title, { color: c.text }]}>
+        Trackers you can choose to use.
+      </Text>
       <View style={styles.row}>
-        <TextInput 
-          style ={styles.input} 
-          placeholder="Search Trackers"
+        <TextInput
+          style={[styles.input, { borderColor: c.border, color: c.text }]}
+          placeholder="Search trackers"
+          placeholderTextColor={c.muted}
           value={query}
           onChangeText={setQuery}
           autoCapitalize="none"
           returnKeyType="search"
         />
-        <Pressable style={styles.button} onPress={() => console.log("Search")}>
+        <Pressable
+          style={[styles.button, { backgroundColor: c.primary }]}
+          onPress={() => console.log("search:", query)}
+        >
           <Text style={styles.buttonText}>Go</Text>
         </Pressable>
       </View>
+      <Text style={{ color: c.muted }}>{query.length} characters</Text>
     </View>
   );
 }
 
-function TrackerRow({tracker}: {tracker: Tracker}) {
+function TrackerRow({ tracker, c }: { tracker: Tracker, c: Palette }) {
+  
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: c.card, borderColor: c.cardBorder },
+      ]}
+    >
       <View style={styles.cardMain}>
-        <Text style={styles.cardTitle}>{tracker.name}</Text>
-        <Text style={styles.cardSub}>{tracker.type}</Text>
+        <Text style={[styles.cardTitle, { color: c.text }]}>
+          {tracker.name}
+        </Text>
+        <Text style={{ color: c.muted }}>{tracker.type}</Text>
       </View>
-      <Text style={styles.cardSub}>{tracker.frequency}</Text>
+       <Text style={styles.cardSub}>{tracker.frequency}</Text>
     </View>
   );
 }
@@ -97,8 +116,18 @@ card: {
   justifyContent: "space-between",
   alignItems: "center",
   gap: 8,
+  ...Platform.select({
+    ios: { 
+      shadowColor: "#000",
+      shadowOpacity: 0.1, 
+      shadowRadius: 4 ,
+      shadowOffset: { width: 0, height: 2 },
+    },
+    android: { 
+      elevation: 2 },
+  })
 },
-cardMain: { flex: 1, gap: 2 },
-cardTitle: { fontWeight: "600" },
-cardSub: { color: "#6b7280" },
+cardMain: {flex: 1, gap: 2},
+cardTitle: {fontWeight: "600"},
+cardSub: {color: "#6b7280"},
 });
