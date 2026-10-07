@@ -5,21 +5,24 @@ import { Tracker, trackers } from "./data/trackers";
 
 export default function Index() {
   const c= colors[useColorScheme() === "dark" ? "dark" : "light"];
+  const [query, setQuery] = useState<string>("");
+  const filtered = trackers.filter((t) =>
+    t.name.toLowerCase().includes(query.trim().toLowerCase())
+  );
 
   return (
     <FlatList 
-      data={trackers}
+      data={filtered}
       keyExtractor={(t) => t.id}
       renderItem={({ item }) => <TrackerRow tracker={item} c={c} />}
-      ListHeaderComponent={<Header c={c}/>}
+      ListHeaderComponent={<Header c={c} query={query} setQuery={setQuery} />}
       contentContainerStyle={styles.list}
     />
   );
 }
 
-function Header({ c }: { c: Palette }) {
-  const [query, setQuery] = useState<string>("");
-
+function Header({
+  c, query, setQuery,}: { c: Palette; query: string; setQuery: (text: string) => void;}) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: c.text }]}>
@@ -42,7 +45,6 @@ function Header({ c }: { c: Palette }) {
           <Text style={styles.buttonText}>Go</Text>
         </Pressable>
       </View>
-      <Text style={{ color: c.muted }}>{query.length} characters</Text>
     </View>
   );
 }
