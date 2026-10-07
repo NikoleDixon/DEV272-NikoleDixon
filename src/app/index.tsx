@@ -1,20 +1,58 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Tracker, trackers } from "./data/trackers";
 
 export default function Index() {
-  const studentName = "Nikole Dixon";
-  const appIdea = "a bullet journaling app. (or an app for a pool service company)";
+  return (
+    <FlatList 
+      data={trackers}
+      keyExtractor={(t) => t.id}
+      renderItem={({ item }) => <TrackerRow tracker={item} />}
+      ListHeaderComponent={<Header />}
+      contentContainerStyle={styles.list}
+    />
+  );
+}
 
+function Header() {
+  const [query, setQuery] = useState<string>("");
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>DEV 272 · Mobile Application Development</Text>
-      <Text style={styles.body}>Hello, I am {studentName}.</Text>
-      <Text style={styles.body}>This quarter I want to build {appIdea}.</Text>
-      <Text style={styles.hint}>Edit src/app/index.tsx to change this screen.</Text>
+      <Text style={styles.title}>Bullet Journal</Text>
+      <View style={styles.row}>
+        <TextInput 
+          style ={styles.input} 
+          placeholder="Search Trackers"
+          value={query}
+          onChangeText={setQuery}
+          autoCapitalize="none"
+          returnKeyType="search"
+        />
+        <Pressable style={styles.button} onPress={() => console.log("Search")}>
+          <Text style={styles.buttonText}>Go</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function TrackerRow({tracker}: {tracker: Tracker}) {
+  return (
+    <View style={styles.card}>
+      <View style={styles.cardMain}>
+        <Text style={styles.cardTitle}>{tracker.name}</Text>
+        <Text style={styles.cardSub}>{tracker.type}</Text>
+      </View>
+      <Text style={styles.cardSub}>{tracker.frequency}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  list: { 
+    padding:15,
+    gap: 8,
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -27,14 +65,40 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
   },
+  row: { flexDirection: "row", gap: 8, alignItems: "center"},
+    input:{
+      flex: 1,
+      borderWidth:1,
+      borderColor: "#9ca3af",
+      borderRadius: 8,
+      padding: 10,
+    },
   body: {
     fontSize: 16,
     textAlign: "center",
   },
-  hint: {
-    marginTop: 24,
-    fontSize: 12,
-    color: "#6b7280",
-    textAlign: "center",
-  },
+button: {
+  backgroundColor: "#2563eb",
+  paddingHorizontal: 16,
+  paddingVertical: 10,
+  borderRadius: 8,
+},
+buttonText: { 
+  color: "#fff", 
+  fontWeight: "600",
+},
+card: {
+  padding: 12,
+  borderRadius: 8,
+  backgroundColor: "#fff",
+  borderWidth: 1,
+  borderColor: "#e5e7eb",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: 8,
+},
+cardMain: { flex: 1, gap: 2 },
+cardTitle: { fontWeight: "600" },
+cardSub: { color: "#6b7280" },
 });
