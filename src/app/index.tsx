@@ -1,28 +1,46 @@
+import { TrackerRow } from "@/compenents/TrackerRow";
 import { useState } from "react";
-import { FlatList, Platform, Pressable, StyleSheet, Text, TextInput, useColorScheme, View } from "react-native";
-import { colors, Palette } from "./constants/colors";
-import { Tracker, trackers } from "./data/trackers";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  useColorScheme,
+  View
+} from "react-native";
+import { colors, Palette } from "../constants/colors";
+import { trackers } from "./data/trackers";
 
 export default function Index() {
-  const c= colors[useColorScheme() === "dark" ? "dark" : "light"];
   const [query, setQuery] = useState<string>("");
-  const filtered = trackers.filter((t) =>
-    t.name.toLowerCase().includes(query.trim().toLowerCase())
+  const q = query.trim().toLowerCase();
+  const filtered = trackers.filter(
+    (t) =>
+    t.name.toLowerCase().includes(q) || t.type.toLowerCase
   );
+  const c = colors[useColorScheme() === "dark" ? "dark" : "light"]
 
   return (
     <FlatList 
       data={filtered}
       keyExtractor={(t) => t.id}
       renderItem={({ item }) => <TrackerRow tracker={item} c={c} />}
-      ListHeaderComponent={<Header c={c} query={query} setQuery={setQuery} />}
+      ListHeaderComponent={
+        <Header c={c} query={query} onChangeQuery={setQuery} />
+      }
       contentContainerStyle={styles.list}
     />
   );
 }
 
-function Header({
-  c, query, setQuery,}: { c: Palette; query: string; setQuery: (text: string) => void;}) {
+type HeaderProps = {
+  query:string;
+  onChangeQuery: (tect: string) => void;
+  c: Palette;
+}
+
+function Header({ query, onChangeQuery, c}: HeaderProps) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: c.text }]}>
@@ -30,44 +48,28 @@ function Header({
       </Text>
       <View style={styles.row}>
         <TextInput
-          style={[styles.input, { borderColor: c.border, color: c.text }]}
+          style={[
+            styles.input, 
+            { borderColor: c.border, color: c.text, backgroundColor: c.card },
+          ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}
           value={query}
-          onChangeText={setQuery}
+          onChangeText={onChangeQuery}
           autoCapitalize="none"
           returnKeyType="search"
         />
         <Pressable
           style={[styles.button, { backgroundColor: c.primary }]}
-          onPress={() => console.log("search:", query)}
+          onPress={() => onChangeQuery("")}
         >
-          <Text style={styles.buttonText}>Go</Text>
+          <Text style={styles.buttonText}>Clear</Text>
         </Pressable>
       </View>
     </View>
   );
 }
 
-function TrackerRow({ tracker, c }: { tracker: Tracker, c: Palette }) {
-  
-  return (
-    <View
-      style={[
-        styles.card,
-        { backgroundColor: c.card, borderColor: c.cardBorder },
-      ]}
-    >
-      <View style={styles.cardMain}>
-        <Text style={[styles.cardTitle, { color: c.text }]}>
-          {tracker.name}
-        </Text>
-        <Text style={{ color: c.muted }}>{tracker.type}</Text>
-      </View>
-       <Text style={styles.cardSub}>{tracker.frequency}</Text>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   list: { 
@@ -75,22 +77,20 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 24,
     gap: 12,
   },
   title: {
     fontSize: 20,
     fontWeight: "600",
     textAlign: "center",
+    marginBottom: 4,
   },
   row: { flexDirection: "row", gap: 8, alignItems: "center"},
     input:{
       flex: 1,
       borderWidth:1,
-      borderColor: "#9ca3af",
       borderRadius: 8,
       padding: 10,
     },
@@ -98,38 +98,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
-button: {
-  backgroundColor: "#2563eb",
-  paddingHorizontal: 16,
-  paddingVertical: 10,
-  borderRadius: 8,
-},
-buttonText: { 
-  color: "#fff", 
-  fontWeight: "600",
-},
-card: {
-  padding: 12,
-  borderRadius: 8,
-  backgroundColor: "#fff",
-  borderWidth: 1,
-  borderColor: "#e5e7eb",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: 8,
-  ...Platform.select({
-    ios: { 
-      shadowColor: "#000",
-      shadowOpacity: 0.1, 
-      shadowRadius: 4 ,
-      shadowOffset: { width: 0, height: 2 },
-    },
-    android: { 
-      elevation: 2 },
-  })
-},
-cardMain: {flex: 1, gap: 2},
-cardTitle: {fontWeight: "600"},
-cardSub: {color: "#6b7280"},
+  button: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  buttonText: { 
+    color: "#fff", 
+    fontWeight: "600",
+  },
 });

@@ -12,7 +12,9 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen 
           name="index" 
-          options={{ title: "DEV 272", headerRight: () => <ThemeToggle/> }}
+          options={{ 
+            title: "Hummingbird Bullet Journal", 
+            headerRight: () => <ThemeToggle/> }}
         />
       </Stack>
     </ThemeProvider>

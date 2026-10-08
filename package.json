@@ -1,9 +1,10 @@
 {
-  "name": "DEV272-NikoleDixon",
+  "name": "hummingbird-bullet-journal",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~57.0.19",
+    "@expo/vector-icons": "^15.1.1",
     "expo": "~57.0.24",
     "expo-constants": "~57.0.19",
     "expo-device": "~57.0.2",

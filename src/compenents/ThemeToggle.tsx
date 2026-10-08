@@ -1,4 +1,4 @@
-import { colors } from "@/app/constants/colors";
+import { colors } from "@/constants/colors";
 import { Appearance, Pressable, StyleSheet, Text, useColorScheme } from "react-native";
 
 export default function Toggle() {
@@ -15,11 +15,15 @@ export default function Toggle() {
         accessibilityLabel="Dark mode"
         accessibilityState={{ checked: isDark }}
         style={({ pressed }) => [
-                styles.toggle,
-                { backgroundColor: c.text, opacity: pressed ? 0.7 : 1 },
+          styles.toggle,
+          { 
+            backgroundColor: c.card,
+            borderColor: c.border,
+            opacity: pressed ? 0.7 : 1
+          },
         ]}
-    >
-        <Text style={[styles.label, {color: c.card}]}>
+      >
+        <Text style={[styles.label, {color: c.text}]}>
             {isDark ? "☀️ Light" : "🌙 Dark"}
         </Text>
       </Pressable>
