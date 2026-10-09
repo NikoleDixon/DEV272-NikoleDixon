@@ -10,14 +10,14 @@ import {
   View
 } from "react-native";
 import { colors, Palette } from "../constants/colors";
-import { trackers } from "./data/trackers";
+import { trackers } from "../data/trackers";
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
   const q = query.trim().toLowerCase();
   const filtered = trackers.filter(
     (t) =>
-    t.name.toLowerCase().includes(q) || t.type.toLowerCase
+    t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
   );
   const c = colors[useColorScheme() === "dark" ? "dark" : "light"]
 

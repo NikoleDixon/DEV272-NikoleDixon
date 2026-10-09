@@ -1,5 +1,5 @@
-import { Tracker } from "@/app/data/trackers";
 import { Palette } from "@/constants/colors";
+import { Tracker } from "@/data/trackers";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 export function TrackerRow({ 
