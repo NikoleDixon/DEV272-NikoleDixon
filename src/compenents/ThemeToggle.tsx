@@ -23,7 +23,7 @@ export default function Toggle() {
           },
         ]}
       >
-        <Text style={[styles.label, {color: c.text}]}>
+        <Text style={[styles.label, { color: c.text }]}>
             {isDark ? "☀️ Light" : "🌙 Dark"}
         </Text>
       </Pressable>
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 999,
+    borderWidth: 1,
   },
   label: {
     fontSize: 14,

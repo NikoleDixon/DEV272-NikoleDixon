@@ -1,4 +1,25 @@
+// import { StyleSheet, Text, View } from "react-native";
+
+// export default function TabIndex() {
+//     return (
+//         <View style={styles.container}>
+//             <Text>No Trackers yet.</Text>
+//         </View>
+//     )
+// }
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         alignItems: "center",
+//         justifyContent: "center",
+//     }
+// })
+
+
 import { TrackerRow } from "@/compenents/TrackerRow";
+import { colors, Palette } from "@/constants/colors";
+import { trackers } from "@/data/trackers";
 import { useState } from "react";
 import {
   FlatList,
@@ -9,8 +30,6 @@ import {
   useColorScheme,
   View
 } from "react-native";
-import { colors, Palette } from "../constants/colors";
-import { trackers } from "../data/trackers";
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
@@ -25,7 +44,7 @@ export default function Index() {
     <FlatList 
       data={filtered}
       keyExtractor={(t) => t.id}
-      renderItem={({ item }) => <TrackerRow tracker={item} c={c} />}
+      renderItem={({ item }) => <TrackerRow tracker={item} />}
       ListHeaderComponent={
         <Header c={c} query={query} onChangeQuery={setQuery} />
       }
@@ -36,7 +55,7 @@ export default function Index() {
 
 type HeaderProps = {
   query:string;
-  onChangeQuery: (tect: string) => void;
+  onChangeQuery: (text: string) => void;
   c: Palette;
 }
 
@@ -94,10 +113,6 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       padding: 10,
     },
-  body: {
-    fontSize: 16,
-    textAlign: "center",
-  },
   button: {
     paddingHorizontal: 16,
     paddingVertical: 10,
