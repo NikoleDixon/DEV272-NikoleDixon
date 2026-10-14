@@ -3,6 +3,7 @@ export type Tracker = {
     name: string;
     type: string;
     frequency: string;
+    by: string;
     icon: string;
 };
 
@@ -13,6 +14,7 @@ export const trackers: Tracker[] = [
         name: "Mood",
         type: "Mental Health",
         frequency: "Yearly",
+        by: "by color",
         icon: "happy-outline",
     },
     {
@@ -20,6 +22,7 @@ export const trackers: Tracker[] = [
         name: "Energy",
         type: "Physical Health",
         frequency: "Yearly",
+        by: "by color",
         icon: "flash-outline",
     },
     {
@@ -27,6 +30,7 @@ export const trackers: Tracker[] = [
         name: "Sleep",
         type: "Physical Health",
         frequency: "Yearly",
+        by: "by color",
         icon: "moon-outline",
     },
     {
@@ -34,6 +38,7 @@ export const trackers: Tracker[] = [
         name: "Habits",
         type: "Physical Health",
         frequency: "Monthly",
+        by: "by color",
         icon: "checkmark-circle-outline",
     },
     {
@@ -41,6 +46,7 @@ export const trackers: Tracker[] = [
         name: "Highlight of the day",
         type: "Mental Health",
         frequency: "Monthly",
+        by: "with text",
         icon: "star-outline",
     },
     {
@@ -48,6 +54,7 @@ export const trackers: Tracker[] = [
         name: "Gratitude Journal",
         type: "Mental Health",
         frequency: "Monthly",
+        by: "with text",
         icon: "heart-outline",
     },
     {
@@ -55,6 +62,7 @@ export const trackers: Tracker[] = [
         name: "Water",
         type: "Physical Health",
         frequency: "Yearly",
+        by: "by color",
         icon: "water-outline",
     },
     {
@@ -62,6 +70,7 @@ export const trackers: Tracker[] = [
         name: "Exercise",
         type: "Physical Health",
         frequency: "Monthly",
+        by: "by color",
         icon: "barbell-outline",
     },
 ]

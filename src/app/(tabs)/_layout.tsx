@@ -2,7 +2,7 @@ import ThemeToggle from "@/compenents/ThemeToggle";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Image, Text, View } from "react-native";
 
 export default function TabLayout() {
     const c = usePalette();
@@ -14,10 +14,23 @@ export default function TabLayout() {
                 options={{
                     title: "Search Trackers",
                     headerTitle: () => (
-                        <Image
-                            source={require("@/assets/images/HBJlogo.png")}
-                            style={{ width: 30, height: 30 }}
-                        />
+                        <View style={{ 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            justifyContent: "center" 
+                            }}>
+                            <Image
+                                source={require("@/assets/images/HBJlogo.png")}
+                                style={{ width: 30, height: 30 }}
+                            />
+                            <Text style={{ 
+                                color: c.text, 
+                                fontSize: 18, 
+                                fontWeight: "600", 
+                                padding: 10 }}>
+                                Hummingbird Bullet Journal
+                            </Text>
+                        </View>
                     ),
                     headerTitleStyle: { color: c.text },
                     headerStyle: { backgroundColor: c.card },
@@ -34,10 +47,23 @@ export default function TabLayout() {
                 options={{
                     title: "Your Trackers",
                     headerTitle: () => (
-                        <Image
-                            source={require("@/assets/images/HBJlogo.png")}
-                            style={{ width: 30, height: 30 }}
-                        />
+                        <View style={{ 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            justifyContent: "center" 
+                            }}>
+                            <Image
+                                source={require("@/assets/images/HBJlogo.png")}
+                                style={{ width: 30, height: 30 }}
+                            />
+                            <Text style={{ 
+                                color: c.text, 
+                                fontSize: 18, 
+                                fontWeight: "600", 
+                                padding: 10 }}>
+                                Hummingbird Bullet Journal
+                            </Text>
+                        </View>
                     ),
                     headerTitleStyle: { color: c.text },
                     headerStyle: { backgroundColor: c.card },

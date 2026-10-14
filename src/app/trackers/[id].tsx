@@ -38,17 +38,24 @@ export default function TrackerDetail() {
           styles.card,
           { backgroundColor: c.card, borderColor: c.cardBorder },
         ]}
-      >
-        <View style={[styles.badge, { backgroundColor: c.primary }]}>
-          <Text style={styles.badgeText}>{tracker.type}</Text>
+              >
+        <View style={styles.header}>
+          <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
+
+          <View style={[styles.badge, { backgroundColor: c.primary }]}>
+            <Text style={styles.badgeText}>{tracker.type}</Text>
+          </View>
         </View>
- 
-        <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
  
         <View style={styles.infoRow}>
           <Ionicons name="calendar-clear-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
              {tracker.frequency}
+          </Text>
+
+          <Ionicons name="color-palette-outline" size={18} color={c.muted} />
+          <Text style={[styles.infoText, { color: c.muted }]}>
+             {tracker.by}
           </Text>
         </View>
  
@@ -90,16 +97,22 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 10,
   },
   badgeText: {
     color: "#fff",
     fontSize: 12,
     fontWeight: "600",
   },
-  name: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+},name: {
+    flex: 1, 
     fontSize: 22,
     fontWeight: "700",
+    marginRight: 12,
   },
   infoRow: {
     flexDirection: "row",

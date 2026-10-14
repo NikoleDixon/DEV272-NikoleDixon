@@ -17,9 +17,9 @@ export default function Toggle() {
         style={({ pressed }) => [
           styles.toggle,
           { 
-            backgroundColor: c.card,
-            borderColor: c.border,
-            opacity: pressed ? 0.7 : 1
+            backgroundColor: c.primary,
+            borderColor: c.text,
+            borderWidth: 0.5,
           },
         ]}
       >
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
   toggle: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 999,
+    borderRadius: 8,
     borderWidth: 1,
-    marginRight: 5,
+    marginRight: 15,
   },
   label: {
     fontSize: 14,

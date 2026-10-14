@@ -1,22 +1,3 @@
-// import { StyleSheet, Text, View } from "react-native";
-
-// export default function TabIndex() {
-//     return (
-//         <View style={styles.container}>
-//             <Text>No Trackers yet.</Text>
-//         </View>
-//     )
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center",
-//     }
-// })
-
-
 import { TrackerRow } from "@/compenents/TrackerRow";
 import { colors, Palette } from "@/constants/colors";
 import { trackers } from "@/data/trackers";
@@ -69,7 +50,7 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
         <TextInput
           style={[
             styles.input, 
-            { borderColor: c.primary, color: c.text, backgroundColor: c.card },
+            { borderColor: c.primary, color: c.text, backgroundColor: c.card, borderWidth: 0.5, },
           ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}
@@ -79,7 +60,7 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
           returnKeyType="search"
         />
         <Pressable
-          style={[styles.button, { backgroundColor: c.primary }]}
+          style={[styles.button, { backgroundColor: c.primary, borderColor: c.text, borderWidth: 0.5,}]}
           onPress={() => onChangeQuery("")}
         >
           <Text style={styles.buttonText}>Clear</Text>
@@ -114,7 +95,7 @@ const styles = StyleSheet.create({
       padding: 10,
     },
   button: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 8,
   },
