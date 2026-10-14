@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 999,
     borderWidth: 1,
+    marginRight: 5,
   },
   label: {
     fontSize: 14,

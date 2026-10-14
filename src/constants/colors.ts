@@ -1,19 +1,19 @@
 export const colors = {
   light: {
-    text: "#111827",
+    text: "#0f4d3f",
     muted: "#6b7280",
-    card: "#ffffff",
-    cardBorder: "#e5e7eb",
-    border: "#9ca3af",
-    primary: "#2563eb",
+    card: "#f9fafb",
+    cardBorder: "#5AC5AA",
+    border: "#0a372d",
+    primary: "#6CCBB4",
   },
   dark: {
     text: "#f9fafb",
     muted: "#9ca3af",
-    card: "#1f2937",
-    cardBorder: "#374151",
-    border: "#4b5563",
-    primary: "#3b82f6",
+    card: "#00261e",
+    cardBorder: "#0f4d3f",
+    border: "#0a372d",
+    primary: "#2a7865",
   },
 };
 

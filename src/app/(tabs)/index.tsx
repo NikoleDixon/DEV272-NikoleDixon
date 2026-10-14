@@ -69,7 +69,7 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
         <TextInput
           style={[
             styles.input, 
-            { borderColor: c.border, color: c.text, backgroundColor: c.card },
+            { borderColor: c.primary, color: c.text, backgroundColor: c.card },
           ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}

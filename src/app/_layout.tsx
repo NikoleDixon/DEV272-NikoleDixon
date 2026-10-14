@@ -20,6 +20,7 @@ export default function RootLayout() {
             options={{ 
               title: "Hummingbird Bullet Journal", 
               headerBackButtonDisplayMode: "minimal",
+              
             }}
           />
         </Stack>
@@ -27,4 +28,3 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
-//
