@@ -1,3 +1,5 @@
+// Purpose: The colors used for light and dark mode on all screens.
+
 export const colors = {
   light: {
     text: "#0f4d3f",

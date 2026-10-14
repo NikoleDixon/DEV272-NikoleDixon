@@ -1,3 +1,5 @@
+// Purpose: Stack for main set up??
+
 import { YourTrackersProvider } from "@/context/YourTrackersContext";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,6 +16,7 @@ export default function RootLayout() {
           <Stack.Screen 
             name="(tabs)" 
             options={{
+              title: "Hummingbird Bullet Journal", 
               headerShown: false }} />
           <Stack.Screen 
             name="trackers/[id]" 

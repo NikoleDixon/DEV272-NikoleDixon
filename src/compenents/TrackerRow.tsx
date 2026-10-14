@@ -1,3 +1,5 @@
+// Purpose: Each tracker will show in a card. Used on search trackers and Your Trackers.
+
 import { Tracker } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";

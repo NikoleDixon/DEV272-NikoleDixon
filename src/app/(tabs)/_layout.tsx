@@ -1,3 +1,5 @@
+// Purpose: Tabs layout (bottom).
+
 import ThemeToggle from "@/compenents/ThemeToggle";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";

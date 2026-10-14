@@ -1,3 +1,7 @@
+// Purpose: Individual Tracker view. Shows all data for tracker selected. 
+// Issue: The tabs are not showing at the bottom. 
+// Issue: the light/dark taggle is not showing.
+
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { trackers } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
@@ -70,7 +74,7 @@ export default function TrackerDetail() {
           ]}
         >
           <Ionicons
-            name={yourtracker ? "star" : "star-outline"}
+            name={yourtracker ? "checkbox" : "checkbox-outline"}
             size={18}
             color={yourtracker ? "#fff" : c.primary}
           />

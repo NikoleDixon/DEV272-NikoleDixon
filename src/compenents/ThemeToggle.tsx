@@ -1,3 +1,5 @@
+// Purpose: Toggle button to change between light and dark colors.
+
 import { colors } from "@/constants/colors";
 import { Appearance, Pressable, StyleSheet, Text, useColorScheme } from "react-native";
 

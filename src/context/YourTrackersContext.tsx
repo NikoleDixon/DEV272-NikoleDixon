@@ -1,3 +1,5 @@
+// Purpose: Filtering trackers when there is a search preformed
+
 import { createContext, useContext, useState, type ReactNode } from "react";
  
 type YourTrackersContextValue = {

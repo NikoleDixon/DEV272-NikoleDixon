@@ -1,3 +1,5 @@
+// Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
+
 import { TrackerRow } from "@/compenents/TrackerRow";
 import { colors, Palette } from "@/constants/colors";
 import { trackers } from "@/data/trackers";

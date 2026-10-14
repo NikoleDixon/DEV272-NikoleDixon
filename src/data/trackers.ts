@@ -1,3 +1,5 @@
+// Purpose: Data list by tracker that feeds to each page with tracker basic information listed.
+
 export type Tracker = {
     id: string;
     name: string;
