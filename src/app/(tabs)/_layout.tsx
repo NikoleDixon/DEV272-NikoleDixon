@@ -1,6 +1,6 @@
 // Purpose: Tabs layout (bottom).
 
-import ThemeToggle from "@/compenents/ThemeToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";

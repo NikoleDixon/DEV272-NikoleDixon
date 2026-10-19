@@ -10,18 +10,17 @@ export default function Toggle() {
 
   return (
       <Pressable 
-        onPressIn={() => Appearance.setColorScheme?.(isDark ? "light" : "dark")}
+        onPress={() => Appearance.setColorScheme?.(isDark ? "light" : "dark")}
         onLongPress={() => Appearance.setColorScheme?.("unspecified")}
         hitSlop={8}
         accessibilityRole="switch"
         accessibilityLabel="Dark mode"
         accessibilityState={{ checked: isDark }}
-        style={({ pressed }) => [
+        style={[
           styles.toggle,
           { 
             backgroundColor: c.primary,
             borderColor: c.text,
-            borderWidth: 0.5,
           },
         ]}
       >
@@ -37,8 +36,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    borderWidth: 1,
+    borderWidth: 0.5,
     marginRight: 15,
+    
   },
   label: {
     fontSize: 14,

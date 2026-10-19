@@ -1,6 +1,6 @@
 // Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
 
-import { TrackerRow } from "@/compenents/TrackerRow";
+import { TrackerRow } from "@/components/TrackerRow";
 import { colors, Palette } from "@/constants/colors";
 import { trackers } from "@/data/trackers";
 import { useState } from "react";
@@ -52,7 +52,10 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
         <TextInput
           style={[
             styles.input, 
-            { borderColor: c.primary, color: c.text, backgroundColor: c.card, borderWidth: 0.5, },
+            { borderColor: c.primary, 
+              color: c.text, 
+              backgroundColor: c.card, 
+              },
           ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}
@@ -62,7 +65,10 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
           returnKeyType="search"
         />
         <Pressable
-          style={[styles.button, { backgroundColor: c.primary, borderColor: c.text, borderWidth: 0.5,}]}
+          style={[styles.button, { 
+            backgroundColor: c.primary, 
+            borderColor: c.text, 
+            }]}
           onPress={() => onChangeQuery("")}
         >
           <Text style={styles.buttonText}>Clear</Text>
@@ -89,17 +95,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 4,
   },
-  row: { flexDirection: "row", gap: 8, alignItems: "center"},
-    input:{
-      flex: 1,
-      borderWidth:1,
-      borderRadius: 8,
-      padding: 10,
-    },
+  row: { 
+    flexDirection: "row", 
+    gap: 8, 
+    alignItems: "center"
+  },
+  input:{
+    flex: 1,
+    borderRadius: 8,
+    padding: 10,
+    borderWidth: 0.5,
+  },
   button: {
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 8,
+    borderWidth: 0.5,
   },
   buttonText: { 
     color: "#fff", 

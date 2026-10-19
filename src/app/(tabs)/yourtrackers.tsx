@@ -1,6 +1,6 @@
 // Purpose: List of Trackers selected and actively using. This can change by user and by month and updated by the user.
 
-import { TrackerRow } from "@/compenents/TrackerRow";
+import { TrackerRow } from "@/components/TrackerRow";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { trackers } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
