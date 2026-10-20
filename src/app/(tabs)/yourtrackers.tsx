@@ -13,6 +13,7 @@ export default function YourTrackers() {
         yourtrackers.includes(t.id),
     );
 
+    // When there are no trackers active/in use in the Your Trackers tab. It desplays error and how to correct.
     if (yourTrackers.length === 0) {
         return (
             <View style={styles.empty}>
@@ -26,6 +27,7 @@ export default function YourTrackers() {
         );
     }
 
+    // Shows the list of trackers that are selected as active/in use.
     return (
         <FlatList
             data={yourTrackers}

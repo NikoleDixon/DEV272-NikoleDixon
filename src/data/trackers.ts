@@ -1,4 +1,4 @@
-// Purpose: Data list by tracker that feeds to each page with tracker basic information listed.
+// Purpose: Data list by tracker that feeds to each page with tracker information.
 
 export type Tracker = {
     id: string;
@@ -31,7 +31,7 @@ export const trackers: Tracker[] = [
         category: "Physical Health",
         type: "Tracker",
         frequency: "Yearly",
-        by: "by color",
+        by: "By color",
         date: "",
         icon: "flash-outline",
         notes: "",
@@ -43,7 +43,7 @@ export const trackers: Tracker[] = [
         type: "Tracker",
         frequency: "Yearly",
         date: "",
-        by: "by color",
+        by: "By color",
         icon: "moon-outline",
         notes: "",
     },
@@ -53,7 +53,7 @@ export const trackers: Tracker[] = [
         category: "Physical Health",
         type: "Tracker",
         frequency: "Monthly",
-        by: "by color",
+        by: "By color",
         date: "",
         icon: "checkmark-circle-outline",
         notes: "",
@@ -64,7 +64,7 @@ export const trackers: Tracker[] = [
         category: "Mental Health",
         type: "Journal",
         frequency: "Monthly",
-        by: "with text",
+        by: "With text",
         date: "",
         icon: "star-outline",
         notes: "",
@@ -75,7 +75,7 @@ export const trackers: Tracker[] = [
         category: "Mental Health",
         type: "Journal",
         frequency: "Monthly",
-        by: "with text",
+        by: "With text",
         date: "",
         icon: "heart-outline",
         notes: "",
@@ -86,7 +86,7 @@ export const trackers: Tracker[] = [
         category: "Physical Health",
         type: "Tracker",
         frequency: "Yearly",
-        by: "by color",
+        by: "By color",
         date: "",
         icon: "water-outline",
         notes: "",
@@ -97,7 +97,7 @@ export const trackers: Tracker[] = [
         category: "Physical Health",
         type: "Tracker",
         frequency: "Yearly",
-        by: "by color",
+        by: "By color",
         date: "",
         icon: "barbell-outline",
         notes: "",

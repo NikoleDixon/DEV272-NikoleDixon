@@ -1,6 +1,6 @@
 // Purpose: Individual Tracker view. Shows all data for tracker selected. 
 // Issue: The tabs are not showing at the bottom. 
-// Issue: the light/dark taggle is not showing.
+// Issue: the light/dark toggle is not showing.
 
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { trackers } from "@/data/trackers";
@@ -16,6 +16,8 @@ export default function TrackerDetail() {
   const { isYourTrackers, toggleYourTrackers } = useYourTrackers();
   const tracker = trackers.find((t) => t.id === id);
 
+
+  // When there are no trackers in use or active in the Your Trackers tab. It desplays 
   if (!tracker) {
     return (
       <View style={styles.screen}>
@@ -44,6 +46,7 @@ export default function TrackerDetail() {
         ]}
               >
         <View style={styles.header}>
+          <Ionicons name={"happy-outline"} size={18} color={c.muted} />
           <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
 
           <View style={[styles.badge, { backgroundColor: c.primary }]}>
@@ -54,7 +57,7 @@ export default function TrackerDetail() {
         <View style={styles.infoRow}>
           <Ionicons name="calendar-clear-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
-             {tracker.frequency}
+             {tracker.frequency}{tracker.category}{tracker.Type}{tracker.frequency}
           </Text>
 
           <Ionicons name="color-palette-outline" size={18} color={c.muted} />
