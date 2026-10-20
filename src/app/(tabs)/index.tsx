@@ -1,48 +1,66 @@
 // Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
 
 import { TrackerRow } from "@/components/TrackerRow";
-import { colors, Palette } from "@/constants/colors";
 import { trackers } from "@/data/trackers";
+import { usePalette } from "@/hooks/usePalette";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 import { useState } from "react";
+
 import {
   FlatList,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
-  useColorScheme,
   View
 } from "react-native";
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
+  // const router = useRouter();
   const q = query.trim().toLowerCase();
   const filtered = trackers.filter(
     (t) =>
     t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
   );
-  const c = colors[useColorScheme() === "dark" ? "dark" : "light"]
+  const c = usePalette();
 
   return (
-    <FlatList 
-      data={filtered}
-      keyExtractor={(t) => t.id}
-      renderItem={({ item }) => <TrackerRow tracker={item} />}
-      ListHeaderComponent={
-        <Header c={c} query={query} onChangeQuery={setQuery} />
-      }
-      contentContainerStyle={styles.list}
-    />
+    <View style={styles.screen}>
+      <FlatList 
+        data={filtered}
+        keyExtractor={(t) => t.id}
+        renderItem={({ item }) => <TrackerRow tracker={item} />}
+        ListHeaderComponent={
+          <Header query={query} onChangeQuery={setQuery} />
+        }
+        contentContainerStyle={styles.list}
+      />
+      <Pressable
+        onPress={() => router.push("/add")}
+        accessibilityRole="button"
+        accessibilityLabel="Add Tracker"
+        style={({ pressed }) => [
+          styles.add,
+          { backgroundColor: c.primary, opacity: pressed ? 0.7 : 1 },
+        ]}
+      >
+        <Ionicons name={"add-outline"} size={30} color={c.text}/>
+      </Pressable>
+    </View>
   );
 }
 
 type HeaderProps = {
   query:string;
   onChangeQuery: (text: string) => void;
-  c: Palette;
 }
 
-function Header({ query, onChangeQuery, c}: HeaderProps) {
+function Header({ query, onChangeQuery}: HeaderProps) {
+  const c = usePalette();
+  
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: c.text }]}>
@@ -74,12 +92,18 @@ function Header({ query, onChangeQuery, c}: HeaderProps) {
           <Text style={styles.buttonText}>Clear</Text>
         </Pressable>
       </View>
+      <Text style={{ color: c.muted}}>
+         {query ? `Matching "${query}"` : "All Trackers"}
+      </Text>
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   list: { 
     padding:15,
     gap: 8,
@@ -116,4 +140,24 @@ const styles = StyleSheet.create({
     color: "#fff", 
     fontWeight: "600",
   },
+  add: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.25,
+        shadowRadius: 6,
+        shadowOffset: { width: 0, height: 3 },
+      },
+      android: { elevation: 6 },
+
+  }),
+},
 });

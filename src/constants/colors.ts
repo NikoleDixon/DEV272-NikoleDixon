@@ -8,6 +8,8 @@ export const colors = {
     cardBorder: "#5AC5AA",
     border: "#0a372d",
     primary: "#6CCBB4",
+    danger: "#dc2626",
+    success: "#028731",
   },
   dark: {
     text: "#f9fafb",
@@ -16,6 +18,8 @@ export const colors = {
     cardBorder: "#0f4d3f",
     border: "#0a372d",
     primary: "#2a7865",
+    danger: "#dc2626",
+    success: "#028731",
   },
 };
 

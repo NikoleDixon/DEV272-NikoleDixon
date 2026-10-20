@@ -17,9 +17,10 @@ export default function TabLayout() {
                     title: "Search Trackers",
                     headerTitle: () => (
                         <View style={{ 
+                            display: "flex",
                             flexDirection: "row", 
-                            alignItems: "center", 
-                            justifyContent: "center" 
+                            justifyContent: "flex-start",
+                            alignItems: "center",
                             }}>
                             <Image
                                 source={require("@/assets/images/HBJlogo.png")}
@@ -50,9 +51,10 @@ export default function TabLayout() {
                     title: "Your Trackers",
                     headerTitle: () => (
                         <View style={{ 
+                            display: "flex",
                             flexDirection: "row", 
-                            alignItems: "center", 
-                            justifyContent: "center" 
+                            justifyContent: "flex-start",
+                            alignItems: "center",
                             }}>
                             <Image
                                 source={require("@/assets/images/HBJlogo.png")}

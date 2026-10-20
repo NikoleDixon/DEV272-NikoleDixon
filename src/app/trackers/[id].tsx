@@ -7,9 +7,8 @@ import { trackers } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-//
 export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const c = usePalette();
@@ -17,7 +16,7 @@ export default function TrackerDetail() {
   const tracker = trackers.find((t) => t.id === id);
 
 
-  // When there are no trackers in use or active in the Your Trackers tab. It desplays 
+// When there are no trackers in use or active in the Your Trackers tab. It desplays 
   if (!tracker) {
     return (
       <View style={styles.screen}>
@@ -33,7 +32,8 @@ export default function TrackerDetail() {
       </View>
     );
   }
- //
+
+
   const yourtracker = isYourTrackers(tracker.id);
  
   return (
@@ -44,9 +44,11 @@ export default function TrackerDetail() {
           styles.card,
           { backgroundColor: c.card, borderColor: c.cardBorder },
         ]}
-              >
+      >
+        
+{/* Header row with icon, title and type of tracker badge. */}
         <View style={styles.header}>
-          <Ionicons name={"happy-outline"} size={18} color={c.muted} />
+          <Ionicons name={tracker.icon as any} size={30} color={c.muted} />
           <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
 
           <View style={[styles.badge, { backgroundColor: c.primary }]}>
@@ -54,10 +56,16 @@ export default function TrackerDetail() {
           </View>
         </View>
  
+{/* Tracker Information with frequency, category, and by. */}
         <View style={styles.infoRow}>
-          <Ionicons name="calendar-clear-outline" size={18} color={c.muted} />
+          <Ionicons name="calendar-number-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
-             {tracker.frequency}{tracker.category}{tracker.Type}{tracker.frequency}
+             {tracker.frequency}
+          </Text>
+
+          <Ionicons name="medkit-outline" size={18} color={c.muted} />
+          <Text style={[styles.infoText, { color: c.muted }]}>
+             {tracker.category}
           </Text>
 
           <Ionicons name="color-palette-outline" size={18} color={c.muted} />
@@ -65,9 +73,8 @@ export default function TrackerDetail() {
              {tracker.by}
           </Text>
         </View>
- 
-        <View style={[styles.divider, { backgroundColor: c.cardBorder }]} />
 
+{/* TOO UPDATE WITH "ACTIVE TRACKER" SWITCH... Toggle button for saving tracker as active/in use tracker by user.
         <Pressable
           onPress={() => toggleYourTrackers(tracker.id)}
           style={({ pressed }) => [
@@ -82,18 +89,27 @@ export default function TrackerDetail() {
             color={yourtracker ? "#fff" : c.primary}
           />
           <Text
-            style={[styles.trackerText, { color: yourtracker ? "#fff" : c.primary }]}
-          >
+            style={[styles.trackerText, { color: yourtracker ? "#fff" : c.primary }]}>
             {yourtracker ? "Added" : "Add to Your Trackers"}
           </Text>
-        </Pressable>
+        </Pressable> */}
+
+{/* Area for notes */}
+        {tracker.notes && (
+          <Text style={[styles.notes, { color: c.text }]}>
+            Notes: {tracker.notes}
+          </Text>
+        )}
       </View>
     </View>
   );
 }
  
 const styles = StyleSheet.create({
-  screen: { flex: 1, padding: 16 },
+  screen: { 
+    flex: 1, 
+    padding: 16 
+  },
   card: {
     padding: 20,
     borderRadius: 16,
@@ -115,6 +131,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 8,
 },name: {
     flex: 1, 
     fontSize: 22,
@@ -132,6 +149,10 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     marginVertical: 4,
+  },
+  notes: {
+    fontSize: 14,
+    lineHeight: 20,
   },
   trackerButton: {
     flexDirection: "row",

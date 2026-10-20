@@ -7,8 +7,9 @@ export type Tracker = {
     type: string;
     frequency: string;
     by: string;
-    date: string; // made this a string until we start using Supabase
+    date: string;
     icon: string;
+    active: boolean;
     notes: string;
 };
 
@@ -23,7 +24,8 @@ export const trackers: Tracker[] = [
         by: "By color",
         date: "",
         icon: "happy-outline",
-        notes: "",
+        active: true,
+        notes: "Mood Note",
     },
     {
         id: "2",
@@ -34,7 +36,8 @@ export const trackers: Tracker[] = [
         by: "By color",
         date: "",
         icon: "flash-outline",
-        notes: "",
+        active: true,
+        notes: "Energy Note",
     },
     {
         id: "3",
@@ -45,7 +48,8 @@ export const trackers: Tracker[] = [
         date: "",
         by: "By color",
         icon: "moon-outline",
-        notes: "",
+        active: true,
+        notes: "Sleep Note",
     },
     {
         id: "4",
@@ -56,7 +60,8 @@ export const trackers: Tracker[] = [
         by: "By color",
         date: "",
         icon: "checkmark-circle-outline",
-        notes: "",
+        active: true,
+        notes: "Habits Note",
     },
     {
         id: "5",
@@ -67,7 +72,8 @@ export const trackers: Tracker[] = [
         by: "With text",
         date: "",
         icon: "star-outline",
-        notes: "",
+        active: true,
+        notes: "Highlight Note",
     },
     {
         id: "6",
@@ -78,7 +84,8 @@ export const trackers: Tracker[] = [
         by: "With text",
         date: "",
         icon: "heart-outline",
-        notes: "",
+        active: true,
+        notes: "Gratitude Note",
     },
     {
         id: "7",
@@ -89,7 +96,8 @@ export const trackers: Tracker[] = [
         by: "By color",
         date: "",
         icon: "water-outline",
-        notes: "",
+        active: true,
+        notes: "Water Note",
     },
     {
         id: "8",
@@ -100,6 +108,7 @@ export const trackers: Tracker[] = [
         by: "By color",
         date: "",
         icon: "barbell-outline",
-        notes: "",
+        active: true,
+        notes: "Exercise Note",
     },
 ]

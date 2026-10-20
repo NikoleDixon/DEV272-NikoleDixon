@@ -15,15 +15,20 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen 
             name="(tabs)" 
-            options={{
-              title: "Hummingbird Bullet Journal", 
-              headerShown: false }} />
+            options={{ headerShown: false }} 
+          />
           <Stack.Screen 
             name="trackers/[id]" 
             options={{ 
               title: "Hummingbird Bullet Journal", 
               headerBackButtonDisplayMode: "minimal",
-              
+            }}
+          />
+          <Stack.Screen 
+            name="add" 
+            options={{ 
+              title: "New tracker", 
+              headerBackButtonDisplayMode: "minimal",
             }}
           />
         </Stack>
