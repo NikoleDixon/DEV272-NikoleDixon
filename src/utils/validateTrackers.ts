@@ -20,7 +20,7 @@ export function validateTrackers(form: AddTrackerForm): TrackerErrors {
 
   const name = form.name.trim();
   if (!name) errors.name = "Tracker Name is required.";
-  else if (name.length < 5) errors.name = "Tracker Name must be at least 5 characters.";
+  else if (name.length < 2) errors.name = "Tracker Name must be at least 5 characters.";
 
   if (!form.category.trim()) errors.category = "Category is required.";
   if (!form.type.trim()) errors.type = "Type is required.";

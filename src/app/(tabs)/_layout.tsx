@@ -28,13 +28,14 @@ export default function TabLayout() {
                             />
                             <Text style={{ 
                                 color: c.text, 
-                                fontSize: 18, 
-                                fontWeight: "600", 
+                                fontSize: 14, 
+                                fontWeight: "600",
                                 padding: 10 }}>
                                 Hummingbird Bullet Journal
                             </Text>
                         </View>
                     ),
+                headerTitleAlign: "left",
                     headerTitleStyle: { color: c.text },
                     headerStyle: { backgroundColor: c.card },
                     tabBarActiveTintColor: c.text,
@@ -62,13 +63,14 @@ export default function TabLayout() {
                             />
                             <Text style={{ 
                                 color: c.text, 
-                                fontSize: 18, 
+                                fontSize: 14, 
                                 fontWeight: "600", 
                                 padding: 10 }}>
                                 Hummingbird Bullet Journal
                             </Text>
                         </View>
                     ),
+                    headerTitleAlign: "left",
                     headerTitleStyle: { color: c.text },
                     headerStyle: { backgroundColor: c.card },
                     tabBarActiveTintColor: c.text,         

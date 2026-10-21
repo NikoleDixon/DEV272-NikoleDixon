@@ -19,7 +19,7 @@ const fromDateString = (s: string) => {
 const CATEGORY_OPTIONS = ["Mental Health", "Physical Health", "Sleep", "Nutrition", "Fitness", "Medication", "Other"];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
 const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
-const BY_OPTIONS = ["By Color", "By Text"];
+const BY_OPTIONS = ["By color", "By text"];
 
 const EMPTY_FORM: AddTrackerForm = {
     name: "",
