@@ -1,12 +1,15 @@
 import { saveTracker } from "@/api/trackers";
 import { usePalette } from "@/hooks/usePalette";
-import { AddTrackerForm, validateTrackers } from "@/utils/validateTrackers";
+import { AddTrackerFormValues, TrackerData, trackerSchema } from "@/utils/trackerSchema";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
-import { ReactNode, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
+import { useState, type ReactNode } from "react";
+import { useForm, type Control } from "react-hook-form";
+import { ActivityIndicator, FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
+import { ZodBoolean, ZodObject, ZodString } from "zod";
+import { $strip } from "zod/v4/core";
 
 const toDateString = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -16,24 +19,26 @@ const fromDateString = (s: string) => {
   return y && m && d ? new Date(y, m - 1, d) : new Date();
 };
 
+// These were in use before React Hook and zod...
 const CATEGORY_OPTIONS = ["Mental Health", "Physical Health", "Sleep", "Nutrition", "Fitness", "Medication", "Other"];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
 const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
 const BY_OPTIONS = ["By color", "By text"];
 
-const EMPTY_FORM: AddTrackerForm = {
+const DEFAULT_VALUES: AddTrackerFormValues = {
     name: "",
     category: "",
     type: "",
     frequency: "",
     by: "",
     date: "",
+    goal: "90",
     icon: "", // add as picker later
     active: true,
     notes: "",
 }
 
-type Touched = Partial<Record<keyof AddTrackerForm, boolean>>;
+type TrackerControl = Control<AddTrackerFormValues, unknown, TrackerData>;
 
 type SelectProps = {
   value: string;
@@ -108,77 +113,48 @@ function Select({ value, options, placeholder, onSelect, onClose, hasError, acce
 
 export default function AddTracker() {
   const c = usePalette();
-  const [form, setForm] = useState<AddTrackerForm>(() => ({
-    ...EMPTY_FORM,
-    date: toDateString(new Date()),
-  }));
-  const [touched, setTouched] = useState<Touched>({});
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-  const errors = validateTrackers(form);
   const router = useRouter();
-  const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const {add} = useTrackers();
 
-  const touch = (key: keyof AddTrackerForm) =>
-    setTouched((current: any) =>({ ...current, [key]:true}));
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<AddTrackerFormValues, unknown, TrackerData>({
+    resolver: zodResolver(trackerSchema),
+    defaultValues: DEFAULT_VALUES,
+    mode: "onTouched",
+  });
 
-  const errorFor = (key: keyof AddTrackerForm) =>
-    touched[key] || submitAttempted ? errors[key] : undefined;
 
-  const update = <K extends keyof AddTrackerForm>(key: K, value: AddTrackerForm[K]) =>
-    setForm((current) => ({ ...current, [key]: value}));
-
-  const inputStyle = (key: keyof AddTrackerForm) => [
-    styles.input, {
-      color: c.text, 
-      backgroundColor: c.card, 
-      borderColor: errorFor(key) ? c.danger : c.border,
-    },
-  ];
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const onChangeDate = (event: DateTimePickerEvent, selected?: Date) => {
     if (Platform.OS === "android") setShowDatePicker(false); 
     if (event.type === "set" && selected) {
-      update("date", toDateString(selected));
-      touch("date");
     }
   };
  
-  const handleSubmit = async () => {
-    if (submitting) return;
-    Keyboard.dismiss();
-    setSubmitAttempted(true);
-    if (Object.keys(errors).length > 0) return;
- 
-    setSubmitting(true);
+  const onSubmit = async (data: TrackerData) => {
     setSubmitError(null);
     try {
-      const saved = await saveTracker({
-        name: form.name.trim(),
-        category: form.category.trim(),
-        type: form.type.trim(),
-        frequency: form.frequency.trim(),
-        by: form.by,
-        date: form.date,
-        icon: form.icon,
-        active: form.active,
-        notes: form.notes.trim(),
-      });
-      Alert.alert("Saved", `${saved.name} was saved.`, [
-        { text: "OK", onPress: () => router.back() },
-      ]);
+      const saved = await saveTracker(data);
+        add(saved);
+        router.back();
     } catch (e) {
-      // Log the technical detail and show the user something they can act on.
       console.warn("saveTracker failed:", e);
       setSubmitError(
         "We could not save your tracker. Check your connection and try again.",
       );
-    } finally {
-      setSubmitting(false);
     }
   };
+
+  const handleSave = () => {
+    Keyboard.dismiss();
+    handleSubmit(onSubmit) ();
+  }
 
   return (
 // Keyboard Management
@@ -207,81 +183,53 @@ export default function AddTracker() {
         </View>
       ) : null}
 
+{/* Form */}
         <View style={styles.switchRow}>
           <Text style={[styles.label, { color: c.text }]}>Active Tracker</Text>
           <Switch
-            value={form.active}
-            onValueChange={(v) => update("active", v)}
             trackColor={{ false : c.border, true: c.primary }}
-            ios_backgroundColor={c.border}
-            thumbColor={c.text}
             accessibilityLabel="Active Tracker"
           />
         </View>
 
-        <Field label="Tracker Name *" error={errorFor("name")}>
-          <TextInput
-            style={inputStyle("name")}
-            value={form.name}
-            onChangeText={(t) => update("name", t)}
-            onBlur={() => touch("name")}
-            placeholder="Mood"
-            placeholderTextColor={c.muted}
-            autoCapitalize="words"
-            returnKeyType="next"
-            accessibilityLabel="Tracker Name Required"
-          />
-        </Field>
+        <TextField
+          control={control}
+          name="name"
+          label="Name"
+          >
+        </TextField>
 
-        <Field label="Category *" error={errorFor("category")}>
-          <Select
-            value={form.category}
-            options={CATEGORY_OPTIONS}
-            placeholder="Select a category"
-            onSelect={(v) => update("category", v)}
-            onClose={() => touch("category")}
-            hasError={!!errorFor("category")}
-            accessibilityLabel="Category Required"
-          />
-        </Field>
+        <TextField
+          control={control}
+          name="category"
+          label="Category *"
+          >
+        </TextField>
 
-        <Field label="Type *" error={errorFor("type")}>
-          <Select
-            value={form.type}
-            options={TYPE_OPTIONS}
-            placeholder="Select a type"
-            onSelect={(v) => update("type", v)}
-            onClose={() => touch("type")}
-            hasError={!!errorFor("type")}
-            accessibilityLabel="Type Required"
-          />
-        </Field>
+        <TextField
+          control={control}
+          name="type"
+          label="Type *"
+        >
+        </TextField>
 
-        <Field label="Frequency *" error={errorFor("frequency")}>
-          <Select
-            value={form.frequency}
-            options={FREQUENCY_OPTIONS}
-            placeholder="Select a frequency"
-            onSelect={(v) => update("frequency", v)}
-            onClose={() => touch("frequency")}
-            hasError={!!errorFor("frequency")}
-            accessibilityLabel="Frequency Required"
-          />
-        </Field>
+        <TextField
+          control={control}
+          name="frequency"
+          label="Frequency *"
+        >
+        </TextField>
 
-        <Field label="By Color or Text *" error={errorFor("by")}>
-          <Select
-            value={form.by}
-            options={BY_OPTIONS}
-            placeholder="Select one"
-            onSelect={(v) => update("by", v)}
-            onClose={() => touch("by")}
-            hasError={!!errorFor("by")}
-            accessibilityLabel="By Color or Text Required"
-          />
-        </Field>
+        <TextField
+          control={control}
+          name="by"
+          label="By Color or Text *"
+        >
+        </TextField>
 
-        <Field label="Date" error={errorFor("date")}>
+
+{/* Im not sure how to change this one and still have the date picker... */}
+        <TextField label="Date">
           <Pressable
             style={[styles.input, styles.dateButton, { backgroundColor: c.card, borderColor: c.border }]}
             onPress={() => setShowDatePicker((open) => !open)}
@@ -302,19 +250,12 @@ export default function AddTracker() {
               onChange={onChangeDate}
             />
           )}
-        </Field>
+        </TextField>
 
-        <Field label="Notes" error={errorFor("notes")}>
+        <Field label="Notes">
           <TextInput
-            style={[inputStyle("notes"), styles.notes]}
-            value={form.notes}
-            onChangeText={(t) => update("notes", t)}
-            onBlur={() => touch("notes")}
-            placeholder="Details about this Tracker"
-            placeholderTextColor={c.muted}
             multiline
             textAlignVertical="top"
-            accessibilityLabel="Notes"
           />
         </Field>
         <Text style={{ color: c.muted }}>* Required</Text>
@@ -431,3 +372,7 @@ const styles = StyleSheet.create({
     padding: 14,
   },
 })
+
+function zodResolver(trackerSchema: ZodObject<{ name: ZodString; category: ZodString; type: ZodString; frequency: ZodString; by: ZodString; date: ZodString; goal: ZodString; icon: ZodString; active: ZodBoolean; notes: ZodString; }, $strip>) {
+  throw new Error("Function not implemented.");
+}

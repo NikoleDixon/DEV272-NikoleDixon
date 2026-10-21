@@ -2,16 +2,13 @@
 
 import { TrackerRow } from "@/components/TrackerRow";
 import { useYourTrackers } from "@/context/YourTrackersContext";
-import { trackers } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function YourTrackers() {
     const c = usePalette();
     const { yourtrackers } = useYourTrackers();
-    const yourTrackers = trackers.filter((t) =>
-        yourtrackers.includes(t.id),
-    );
+    const yourTrackers = yourtrackers;
 
     // When there are no trackers active/in use in the Your Trackers tab. It desplays error and how to correct.
     if (yourTrackers.length === 0) {

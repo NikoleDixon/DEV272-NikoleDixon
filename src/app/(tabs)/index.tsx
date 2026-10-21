@@ -1,11 +1,13 @@
 // Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
 
+import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { TrackerRow } from "@/components/TrackerRow";
-import { trackers } from "@/data/trackers";
+import { useYourTrackers } from "@/context/YourTrackersContext";
+import { Tracker } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   FlatList,
@@ -19,13 +21,37 @@ import {
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
-  // const router = useRouter();
+  const {trackers } = useYourTrackers();
   const q = query.trim().toLowerCase();
   const filtered = trackers.filter(
     (t) =>
     t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
   );
   const c = usePalette();
+
+  const [restaurants, setRestaurants] = useState<Tracker[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+ 
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      setRestaurants(await fetchTrackers());
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+ 
+ 
+  useEffect(() => {
+    load();
+  }, []);
+ 
+  if (loading) return <LoadingView />;
+  if (error) return <ErrorView message={error} onRetry={load} />;
 
   return (
     <View style={styles.screen}>

@@ -3,7 +3,6 @@
 // Issue: the light/dark toggle is not showing.
 
 import { useYourTrackers } from "@/context/YourTrackersContext";
-import { trackers } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams } from "expo-router";
@@ -12,9 +11,8 @@ import { StyleSheet, Text, View } from "react-native";
 export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const c = usePalette();
-  const { isYourTrackers, toggleYourTrackers } = useYourTrackers();
-  const tracker = trackers.find((t) => t.id === id);
-
+  const { yourtrackers } = useYourTrackers();
+  const tracker = yourtrackers.find((t) => t.id === id);
 
 // When there are no trackers in use or active in the Your Trackers tab. It desplays 
   if (!tracker) {
@@ -32,9 +30,6 @@ export default function TrackerDetail() {
       </View>
     );
   }
-
-
-  const yourtracker = isYourTrackers(tracker.id);
  
   return (
     <View style={styles.screen}>
