@@ -14,7 +14,7 @@ export function LoadingView() {
   const c = usePalette();
 
   return (
-    <View style={styles.center}>
+    <View style={[styles.center, { backgroundColor: c.card }]}>
       <ActivityIndicator size="large" color={c.primary} />
     </View>
   );
@@ -29,7 +29,7 @@ export function ErrorView({ message, onRetry }: ErrorViewProps) {
   const c = usePalette();
 
   return (
-    <View style={styles.center}>
+    <View style={[styles.center, { backgroundColor: c.card }]}>
       <Text style={{ color: c.danger }} accessibilityRole="alert">
         {message}
       </Text>

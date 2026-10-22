@@ -13,7 +13,7 @@ export default function YourTrackers() {
     // When there are no trackers active/in use in the Your Trackers tab. It desplays error and how to correct.
     if (yourTrackers.length === 0) {
         return (
-            <View style={styles.empty}>
+            <View style={[styles.empty, { backgroundColor: c.background }]}>
                 <Text style={{ color: c.muted }}>
                     You have not selected any Trackers to use yet.
                 </Text>
@@ -27,6 +27,7 @@ export default function YourTrackers() {
     // Shows the list of trackers that are selected as active/in use.
     return (
         <FlatList
+            style={{ backgroundColor: c.background }}
             data={yourTrackers}
             keyExtractor={(t) => t.id}
             renderItem={({ item }) => <TrackerRow tracker={item}  />}

@@ -20,7 +20,6 @@ export default function Toggle() {
           styles.toggle,
           { 
             backgroundColor: c.primary,
-            borderColor: c.text,
           },
         ]}
       >

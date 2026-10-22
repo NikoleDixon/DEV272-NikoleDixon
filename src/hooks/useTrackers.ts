@@ -1,1 +1,6 @@
-// To be updated with week 5 (Tried to follow along)
+// Custom hook wrapping YourTrackersContext for convenient import
+import { useYourTrackers } from "@/context/YourTrackersContext";
+
+export function useTrackers() {
+  return useYourTrackers();
+}

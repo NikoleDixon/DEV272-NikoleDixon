@@ -17,7 +17,7 @@ export default function TrackerDetail() {
 // When there are no trackers in use or active in the Your Trackers tab. It desplays 
   if (!tracker) {
     return (
-      <View style={styles.screen}>
+      <View style={[styles.screen, { backgroundColor: c.background }]}>
         <View
           style={[
             styles.card,
@@ -32,7 +32,7 @@ export default function TrackerDetail() {
   }
  
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.background }]}>
       <Stack.Screen options={{ title: tracker.name }} />
       <View
         style={[
@@ -47,7 +47,7 @@ export default function TrackerDetail() {
           <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
 
           <View style={[styles.badge, { backgroundColor: c.primary }]}>
-            <Text style={styles.badgeText}>{tracker.type}</Text>
+            <Text style={[styles.badgeText, { color: c.text }]}>{tracker.type}</Text>
           </View>
         </View>
  
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   badgeText: {
-    color: "#fff",
     fontSize: 12,
     fontWeight: "600",
   },

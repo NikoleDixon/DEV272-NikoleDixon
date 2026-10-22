@@ -5,6 +5,7 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 
 type YourTrackersContextValue = {
   yourtrackers: Tracker[];
+  trackers: Tracker[];
   add: (tracker: Tracker) => void;
 };
  
@@ -17,7 +18,7 @@ export function YourTrackersProvider({ children }: { children: ReactNode }) {
     setYourTrackers((current) => [tracker, ...current]);
 
   return (
-    <YourTrackersContext.Provider value={{ yourtrackers, add }}>
+    <YourTrackersContext.Provider value={{ yourtrackers, trackers: yourtrackers, add }}>
       {children}
     </YourTrackersContext.Provider>
   );

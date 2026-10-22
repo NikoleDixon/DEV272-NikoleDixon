@@ -1,14 +1,12 @@
 // Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
 
-import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { TrackerRow } from "@/components/TrackerRow";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { Tracker } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import {
   FlatList,
   Platform,
@@ -21,40 +19,16 @@ import {
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
-  const {trackers } = useYourTrackers();
+  const { trackers } = useYourTrackers();
   const q = query.trim().toLowerCase();
-  const filtered = trackers.filter(
-    (t) =>
-    t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
+  const filtered = (trackers ?? []).filter(
+    (t: Tracker) =>
+      t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
   );
   const c = usePalette();
 
-  const [restaurants, setRestaurants] = useState<Tracker[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
- 
-  const load = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      setRestaurants(await fetchTrackers());
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
- 
- 
-  useEffect(() => {
-    load();
-  }, []);
- 
-  if (loading) return <LoadingView />;
-  if (error) return <ErrorView message={error} onRetry={load} />;
-
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: c.background }]}>
       <FlatList 
         data={filtered}
         keyExtractor={(t) => t.id}
@@ -111,11 +85,11 @@ function Header({ query, onChangeQuery}: HeaderProps) {
         <Pressable
           style={[styles.button, { 
             backgroundColor: c.primary, 
-            borderColor: c.text, 
+
             }]}
           onPress={() => onChangeQuery("")}
         >
-          <Text style={styles.buttonText}>Clear</Text>
+          <Text style={[styles.buttonText, { color: c.text }]}>Clear</Text>
         </Pressable>
       </View>
       <Text style={{ color: c.muted}}>
@@ -163,7 +137,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   buttonText: { 
-    color: "#fff", 
     fontWeight: "600",
   },
   add: {
