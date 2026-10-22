@@ -412,7 +412,7 @@ export default function AddTracker() {
 
               {showDatePicker &&
                 (Platform.OS === "ios" ? (
-                  <View style={[styles.datePickerContainer, { backgroundColor: c.card}]}>
+                  <View style={[styles.datePickerContainer, { backgroundColor: c.card, borderColor: c.cardBorder}]}>
                     <DateTimePicker
                       value={fromDateString(value || toDateString(new Date()))}
                       mode="date"

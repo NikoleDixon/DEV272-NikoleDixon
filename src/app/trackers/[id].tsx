@@ -1,6 +1,7 @@
 // Purpose: Individual Tracker view. Shows all data for tracker selected. 
 // Issue: The tabs are not showing at the bottom. 
 // Issue: the light/dark toggle is not showing.
+// Future: add in by day tracking with modal/other for different options
 
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
@@ -14,7 +15,7 @@ export default function TrackerDetail() {
   const { yourtrackers } = useYourTrackers();
   const tracker = yourtrackers.find((t) => t.id === id);
 
-// When there are no trackers in use or active in the Your Trackers tab. It desplays 
+// No Your Trackers selected 
   if (!tracker) {
     return (
       <View style={[styles.screen, { backgroundColor: c.background }]}>
@@ -41,17 +42,24 @@ export default function TrackerDetail() {
         ]}
       >
         
-{/* Header row with icon, title and type of tracker badge. */}
+{/* Header with icon, title, and badges */}
         <View style={styles.header}>
           <Ionicons name={tracker.icon as any} size={30} color={c.muted} />
           <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
 
-          <View style={[styles.badge, { backgroundColor: c.primary }]}>
-            <Text style={[styles.badgeText, { color: c.text }]}>{tracker.type}</Text>
+          <View style={styles.badgeGroup}>
+            <View style={[styles.badge, { backgroundColor: c.primary }]}>
+              <Text style={[styles.badgeText, { color: c.text }]}>{tracker.type}</Text>
+            </View>
+            <View style={[styles.badge, { backgroundColor: tracker.active ? c.primary : c.muted }]}>
+              <Text style={[styles.badgeText, { color: c.text }]}>
+                {tracker.active ? "Active" : "Inactive"}
+              </Text>
+            </View>
           </View>
         </View>
  
-{/* Tracker Information with frequency, category, and by. */}
+{/* Tracker Information with frequency, category, by, date, goal and notes */}
         <View style={styles.infoRow}>
           <Ionicons name="calendar-number-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
@@ -69,27 +77,28 @@ export default function TrackerDetail() {
           </Text>
         </View>
 
-{/* TOO UPDATE WITH "ACTIVE TRACKER" SWITCH... Toggle button for saving tracker as active/in use tracker by user.
-        <Pressable
-          onPress={() => toggleYourTrackers(tracker.id)}
-          style={({ pressed }) => [
-            styles.trackerButton,
-            { borderColor: c.primary, opacity: pressed ? 0.7 : 1 },
-            yourtracker && { backgroundColor: c.primary },
-          ]}
-        >
-          <Ionicons
-            name={yourtracker ? "checkbox" : "checkbox-outline"}
-            size={18}
-            color={yourtracker ? "#fff" : c.primary}
-          />
-          <Text
-            style={[styles.trackerText, { color: yourtracker ? "#fff" : c.primary }]}>
-            {yourtracker ? "Added" : "Add to Your Trackers"}
-          </Text>
-        </Pressable> */}
+        <View style={styles.infoRow}>
+          {tracker.date ? (
+            <>
+              <Ionicons name="calendar-outline" size={18} color={c.muted} />
+              <Text style={[styles.infoText, { color: c.muted }]}>
+                {tracker.date}
+              </Text>
+            </>
+          ) : null}
 
-{/* Area for notes */}
+          {tracker.goal !== undefined ? (
+            <>
+              <Ionicons name="flag-outline" size={18} color={c.muted} />
+              <Text style={[styles.infoText, { color: c.muted }]}>
+                Goal: {tracker.goal}%
+              </Text>
+            </>
+          ) : null}
+        </View>
+
+        <View style={[styles.divider, { backgroundColor: c.cardBorder }]} />
+
         {tracker.notes && (
           <Text style={[styles.notes, { color: c.text }]}>
             Notes: {tracker.notes}
@@ -116,6 +125,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
+  },
+  badgeGroup: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "center",
   },
   badgeText: {
     fontSize: 12,
