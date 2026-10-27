@@ -1,31 +1,47 @@
 // Purpose: Search Trackers (onType). Shows some data for trackers. Can select different trackers to view full data. 
 
+import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { TrackerRow } from "@/components/TrackerRow";
-import { useYourTrackers } from "@/context/YourTrackersContext";
-import { Tracker } from "@/data/trackers";
 import { usePalette } from "@/hooks/usePalette";
+import { useTrackers } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   FlatList,
   Platform,
   Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
 } from "react-native";
 
 export default function Index() {
   const [query, setQuery] = useState<string>("");
-  const { trackers } = useYourTrackers();
+  const router = useRouter();
+  const c = usePalette();
+
+  const {
+    data: trackers,
+    isPending,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+  } = useTrackers();
+
   const q = query.trim().toLowerCase();
-  const filtered = (trackers ?? []).filter(
-    (t: Tracker) =>
+  const filtered = trackers?.filter(
+    (t) =>
       t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
   );
-  const c = usePalette();
+
+  if (isPending) return <LoadingView />;
+
+  if (isError) 
+    return <ErrorView message={error.message} onRetry={() => refetch()} />;
 
   return (
     <View style={[styles.screen, { backgroundColor: c.background }]}>
@@ -35,6 +51,17 @@ export default function Index() {
         renderItem={({ item }) => <TrackerRow tracker={item} />}
         ListHeaderComponent={
           <Header query={query} onChangeQuery={setQuery} />
+        }
+        ListEmptyComponent={
+          <View style={[styles.center, { padding: 32 }]}>
+            <Ionicons name="file-tray-outline" size={40} color={c.muted} />
+            <Text style={{ color: c.muted, marginTop: 8, fontSize: 16 }}>
+              {q ? `No trackers match "${query}".` : "No trackers found."}
+            </Text>
+          </View>
+        }
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={() => refetch()} />
         }
         contentContainerStyle={styles.list}
       />
@@ -54,11 +81,11 @@ export default function Index() {
 }
 
 type HeaderProps = {
-  query:string;
+  query: string;
   onChangeQuery: (text: string) => void;
-}
+};
 
-function Header({ query, onChangeQuery}: HeaderProps) {
+function Header({ query, onChangeQuery }: HeaderProps) {
   const c = usePalette();
   
   return (
@@ -73,7 +100,7 @@ function Header({ query, onChangeQuery}: HeaderProps) {
             { borderColor: c.primary, 
               color: c.text, 
               backgroundColor: c.card, 
-              },
+            },
           ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}
@@ -83,30 +110,54 @@ function Header({ query, onChangeQuery}: HeaderProps) {
           returnKeyType="search"
         />
         <Pressable
-          style={[styles.button, { 
-            backgroundColor: c.primary, 
-
-            }]}
+          style={[styles.button, { backgroundColor: c.primary }]}
           onPress={() => onChangeQuery("")}
         >
           <Text style={[styles.buttonText, { color: c.text }]}>Clear</Text>
         </Pressable>
       </View>
-      <Text style={{ color: c.muted}}>
+      <Text style={{ color: c.muted }}>
          {query ? `Matching "${query}"` : "All Trackers"}
       </Text>
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  center: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  statusText: {
+    marginTop: 12,
+    fontSize: 16,
+  },
+  errorTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 12,
+  },
+  errorMessage: {
+    textAlign: "center",
+    marginTop: 8,
+    marginBottom: 16,
+    fontSize: 14,
+  },
+  retryButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
   list: { 
-    padding:15,
+    padding: 15,
     gap: 8,
+  },
+  empty: {
+    textAlign: "center",
+    paddingVertical: 24,
   },
   container: {
     alignItems: "center",
@@ -122,9 +173,9 @@ const styles = StyleSheet.create({
   row: { 
     flexDirection: "row", 
     gap: 8, 
-    alignItems: "center"
+    alignItems: "center",
   },
-  input:{
+  input: {
     flex: 1,
     borderRadius: 8,
     padding: 10,
@@ -156,7 +207,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 3 },
       },
       android: { elevation: 6 },
-
-  }),
-},
+    }),
+  },
 });

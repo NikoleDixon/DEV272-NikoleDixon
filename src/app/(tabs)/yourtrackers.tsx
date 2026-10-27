@@ -1,17 +1,36 @@
 // Purpose: List of Trackers selected and actively using. This can change by user and by month and updated by the user.
 
+import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { TrackerRow } from "@/components/TrackerRow";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
+import { useTrackers } from "@/hooks/useTrackers";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function YourTrackers() {
     const c = usePalette();
     const { yourtrackers } = useYourTrackers();
-    const yourTrackers = yourtrackers;
+
+    const {
+        data: trackers,
+        isPending,
+        isError,
+        error,
+        refetch,
+    } = useTrackers();
+    
+    const yourTrackers = trackers?.filter((t) =>
+        yourtrackers.includes(t.id),
+  );
+
+  if (isPending) return <LoadingView />;
+
+  if (isError) 
+    return <ErrorView message={error.message} onRetry={() => refetch()} />;
+
 
     // When there are no trackers active/in use in the Your Trackers tab. It desplays error and how to correct.
-    if (yourTrackers.length === 0) {
+    if (yourTrackers?.length === 0) {
         return (
             <View style={[styles.empty, { backgroundColor: c.background }]}>
                 <Text style={{ color: c.muted }}>

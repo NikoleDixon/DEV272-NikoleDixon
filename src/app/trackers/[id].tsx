@@ -3,19 +3,31 @@
 // Issue: the light/dark toggle is not showing.
 // Future: add in by day tracking with modal/other for different options
 
+import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
+import { useTracker } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Switch, Text, View } from "react-native";
 
 export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const c = usePalette();
-  const { yourtrackers } = useYourTrackers();
-  const tracker = yourtrackers.find((t) => t.id === id);
+  const { yourtrackers, toggleTracker } = useYourTrackers();
+  const {
+    data: tracker,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useTracker(id);
 
-// No Your Trackers selected 
+  if (isPending) return <LoadingView />;
+
+  if (isError) 
+    return <ErrorView message={error.message} onRetry={() => refetch()} />;
+
   if (!tracker) {
     return (
       <View style={[styles.screen, { backgroundColor: c.background }]}>
@@ -31,7 +43,9 @@ export default function TrackerDetail() {
       </View>
     );
   }
- 
+
+  const isActive = yourtrackers.includes(tracker.id);
+
   return (
     <View style={[styles.screen, { backgroundColor: c.background }]}>
       <Stack.Screen options={{ title: tracker.name }} />
@@ -51,12 +65,23 @@ export default function TrackerDetail() {
             <View style={[styles.badge, { backgroundColor: c.primary }]}>
               <Text style={[styles.badgeText, { color: c.text }]}>{tracker.type}</Text>
             </View>
-            <View style={[styles.badge, { backgroundColor: tracker.active ? c.primary : c.muted }]}>
+            <View style={[styles.badge, { backgroundColor: isActive ? c.primary : c.muted }]}>
               <Text style={[styles.badgeText, { color: c.text }]}>
-                {tracker.active ? "Active" : "Inactive"}
+                {isActive ? "Active" : "Inactive"}
               </Text>
             </View>
           </View>
+        </View>
+
+{/* Active Tracker Switch */}
+        <View style={styles.switchRow}>
+          <Text style={[styles.switchLabel, { color: c.text }]}>Active Tracker</Text>
+          <Switch
+            value={isActive}
+            onValueChange={() => toggleTracker(tracker.id)}
+            trackColor={{ false: c.border, true: c.primary }}
+            accessibilityLabel="Active Tracker Switch"
+          />
         </View>
  
 {/* Tracker Information with frequency, category, by, date, goal and notes */}
@@ -112,7 +137,11 @@ export default function TrackerDetail() {
 const styles = StyleSheet.create({
   screen: { 
     flex: 1, 
-    padding: 16 
+    padding: 16,
+  },
+  center: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   card: {
     padding: 20,
@@ -140,7 +169,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 8,
-},name: {
+  },
+  name: {
     flex: 1, 
     fontSize: 22,
     fontWeight: "700",
@@ -162,18 +192,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  trackerButton: {
+  switchRow: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    borderWidth: 1.5,
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 6,
   },
-  trackerText: {
+  switchLabel: {
     fontSize: 15,
     fontWeight: "600",
   },
-})
+});

@@ -1,6 +1,6 @@
 // Purpose: Form to create and add a new tracker with validation using React Hook Form and Zod.
 
-import { saveTracker } from "@/api/trackers";
+import { createTrackers } from "@/api/trackers";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import { AddTrackerFormValues, TrackerData, trackerSchema } from "@/utils/trackerSchema";
@@ -8,11 +8,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useRef, useState, type ReactNode } from "react";
 import { Controller, useForm, type Control } from "react-hook-form";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -234,14 +236,31 @@ function SelectField({
 export default function AddTracker() {
   const c = usePalette();
   const router = useRouter();
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const { add } = useYourTrackers();
+  const queryClient = useQueryClient();
+  const { setTrackerActive } = useYourTrackers();
+
+  // Mutation for creating a tracker on Supabase
+  const mutation = useMutation({
+    mutationFn: createTrackers,
+    onSuccess: (newTracker) => {
+      queryClient.invalidateQueries({ queryKey: ["trackers"] });
+      if (newTracker?.active) {
+        setTrackerActive(newTracker.id, true);
+      }
+      router.back();
+    },
+    onError: (e) => {
+      Alert.alert(
+        "Save Failed",
+        e instanceof Error ? e.message : "We could not save your tracker. Please try again."
+      );
+    },
+  });
 
   // Form hook setup
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
   } = useForm<AddTrackerFormValues, unknown, TrackerData>({
     resolver: zodResolver(trackerSchema),
     defaultValues: DEFAULT_VALUES,
@@ -252,22 +271,12 @@ export default function AddTracker() {
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Form submission handler
-  const onSubmit = async (data: TrackerData) => {
-    setSubmitError(null);
-    try {
-      const saved = await saveTracker({
-        ...data,
-        goal: Number(data.goal),
-        icon: data.icon || "happy-outline",
-      });
-      add(saved);
-      router.back();
-    } catch (e) {
-      console.warn("saveTracker failed:", e);
-      setSubmitError(
-        "We could not save your tracker. Check your connection and try again.",
-      );
-    }
+  const onSubmit = (data: TrackerData) => {
+    mutation.mutate({
+      ...data,
+      goal: Number(data.goal),
+      icon: data.icon || "happy-outline",
+    });
   };
 
   const handleSave = () => {
@@ -290,19 +299,6 @@ export default function AddTracker() {
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets={true}
       >
-{/* Error message banner */}
-        {submitError ? (
-          <View
-            style={[styles.banner, { borderColor: c.danger }]}
-            accessibilityRole="alert"
-          >
-            <Ionicons name="alert-circle-outline" size={20} color={c.danger} />
-            <Text style={[styles.bannerText, { color: c.danger }]}>
-              {submitError}
-            </Text>
-          </View>
-        ) : null}
-
 {/* Active tracker switch */}
         <Controller
           control={control}
@@ -459,14 +455,14 @@ export default function AddTracker() {
 {/* Save Button */}
         <Pressable
           style={[styles.save, { backgroundColor: c.primary, borderColor: c.border }]}
-          disabled={isSubmitting}
+          disabled={mutation.isPending}
           onPress={handleSave}
           accessibilityRole="button"
-          accessibilityState={{ disabled: isSubmitting, busy: isSubmitting }}
+          accessibilityState={{ disabled: mutation.isPending, busy: mutation.isPending }}
         >
-          {isSubmitting ? <ActivityIndicator color={c.text} /> : null}
+          {mutation.isPending ? <ActivityIndicator color={c.text} /> : null}
           <Text style={[styles.saveText, { color: c.text }]}>
-            {isSubmitting ? "Saving..." : submitError ? "Try again" : "Save"}
+            {mutation.isPending ? "Saving..." : "Save"}
           </Text>
         </Pressable>
       </ScrollView>

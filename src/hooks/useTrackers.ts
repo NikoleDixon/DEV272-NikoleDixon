@@ -1,6 +1,15 @@
 // Custom hook wrapping YourTrackersContext for convenient import
-import { useYourTrackers } from "@/context/YourTrackersContext";
+import { fetchTracker, fetchTrackers } from "@/api/trackers";
+import { useQuery } from "@tanstack/react-query";
 
 export function useTrackers() {
-  return useYourTrackers();
+  return useQuery({ queryKey: ["trackers"],queryFn: fetchTrackers });
+}
+
+export function useTracker(id:string) {
+  return useQuery({
+    queryKey: ["trackers", id],
+    queryFn: () => fetchTracker(id),
+    enabled: !!id,
+  });
 }

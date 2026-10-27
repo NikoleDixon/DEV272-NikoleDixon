@@ -157,3 +157,87 @@ Put components, hooks, and utilities in `src/` next to `app/` (for example `src/
 | `.vscode/settings.json` | Turns off Copilot inline completions for this workspace. |
 
 If an AI tool starts writing code for you anyway, stop, and ask it to explain instead. That is the tool ignoring the rules, and the grade is still yours.
+
+
+## 11. Setup
+
+### 1. Environment Variables
+
+Create a `.env` file in the project root directory and add your Supabase credentials:
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
+EXPO_PUBLIC_SUPABASE_KEY=your_supabase_anon_key
+```
+
+> **Note:** The `.env` file is excluded from version control via `.gitignore`. Provide your actual project URL and anon public key when running locally.
+
+### 2. Database Setup (Supabase)
+
+In your Supabase project dashboard, navigate to the **SQL Editor**, paste the following SQL script, and run it to create the table, check constraints, RLS policies, and initial seed data:
+
+```sql
+-- 1. Create the trackers table
+create table public.trackers (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(btrim(name)) >= 2),
+  category text not null check (category in (
+    'Mental Health', 'Physical Health', 'Sleep', 'Nutrition',
+    'Fitness', 'Medication', 'Other'
+  )),
+  type text not null check (type in ('Tracker', 'Journal')),
+  frequency text not null check (frequency in ('Daily', 'Weekly', 'Monthly', 'Yearly')),
+  by text not null check (by in ('By color', 'With text', 'By text')),
+  date date not null default current_date,
+  goal integer not null default 90 check (goal >= 1 and goal <= 100),
+  icon text not null default 'ellipse-outline',
+  active boolean not null default true,
+  notes text not null default '' check (char_length(notes) <= 500)
+);
+
+-- 2. Grant permissions
+grant select, insert on public.trackers to anon;
+
+-- 3. Enable Row Level Security (RLS)
+alter table public.trackers enable row level security;
+
+-- 4. Create RLS Policies
+create policy "Anyone can read trackers"
+  on public.trackers for select
+  to anon
+  using (true);
+
+create policy "Anyone can add trackers"
+  on public.trackers for insert
+  to anon
+  with check (true);
+
+-- 5. Insert seed rows
+insert into public.trackers (name, category, type, frequency, by, goal, icon, active, notes) values
+  ('Mood', 'Mental Health', 'Tracker', 'Yearly', 'By color', 90, 'happy-outline', true, 'Mood Note'),
+  ('Energy', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'flash-outline', true, 'Energy Note'),
+  ('Sleep', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'moon-outline', true, 'Sleep Note'),
+  ('Habits', 'Physical Health', 'Tracker', 'Monthly', 'By color', 90, 'checkmark-circle-outline', true, 'Habits Note'),
+  ('Highlight of the day', 'Mental Health', 'Journal', 'Monthly', 'With text', 90, 'star-outline', true, 'Highlight Note'),
+  ('Gratitude Journal', 'Mental Health', 'Journal', 'Monthly', 'With text', 90, 'heart-outline', true, 'Gratitude Note'),
+  ('Water', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'water-outline', true, 'Water Note'),
+  ('Exercise', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'barbell-outline', true, 'Exercise Note');
+```
+
+### 3. How to Run
+
+Install dependencies and start the Expo development server:
+
+```bash
+pnpm install
+pnpm start
+```
+
+### 4. Type Check Verification
+
+Verify that there are zero TypeScript compiler errors:
+
+```bash
+pnpm exec tsc --noEmit
+```
