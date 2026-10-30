@@ -9,11 +9,14 @@ import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Stack, useLocalSearchParams } from "expo-router";
-import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const c = usePalette();
   const { yourtrackers, toggleTracker } = useYourTrackers();
   const { data: tracker, isPending, isError, error, refetch } = useTracker(id);
@@ -25,15 +28,29 @@ export default function TrackerDetail() {
 
   if (!tracker) {
     return (
-      <View style={[styles.screen, { backgroundColor: c.background }]}>
-        <View
-          style={[
-            styles.card,
-            { backgroundColor: c.card, borderColor: c.cardBorder },
-          ]}
-        >
-          <Text style={[styles.name, { color: c.text }]}>Not found</Text>
-          <Text style={{ color: c.muted }}>No tracker with id {id}.</Text>
+      <View style={[styles.container, { backgroundColor: c.background, paddingTop: insets.top }]}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View style={styles.topBar}>
+          <Pressable
+            onPress={() => router.back()}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            style={styles.backButton}
+          >
+            <Ionicons name="chevron-back" size={26} color={c.text} />
+          </Pressable>
+        </View>
+        <View style={styles.screen}>
+          <View
+            style={[
+              styles.card,
+              { backgroundColor: c.card, borderColor: c.cardBorder },
+            ]}
+          >
+            <Text style={[styles.name, { color: c.text }]}>Not found</Text>
+            <Text style={{ color: c.muted }}>No tracker with id {id}.</Text>
+          </View>
         </View>
       </View>
     );
@@ -42,37 +59,45 @@ export default function TrackerDetail() {
   const isActive = yourtrackers.includes(tracker.id);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: c.background }}
-      contentContainerStyle={styles.screen}
-      contentInsetAdjustmentBehavior="automatic"
-      showsVerticalScrollIndicator={false}
-    >
-      <Stack.Screen
-        options={{
-          headerTitle: () => (
-            <View style={styles.headerTitle}>
-              <Ionicons
-                name={tracker.icon as any}
-                size={20}
-                color={c.primary}
-              />
-              <Text style={[styles.headerTitleText, { color: c.text }]}>
-                {tracker.name}
-              </Text>
-            </View>
-          ),
-          headerRight: () => <ThemeToggle />,
-          headerStyle: { backgroundColor: c.background },
-          headerShadowVisible: false,
-        }}
-      />
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: c.card, borderColor: c.cardBorder },
-        ]}
+    <View style={[styles.container, { backgroundColor: c.background, paddingTop: insets.top }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+
+      {/* Custom Top Navigation Bar */}
+      <View style={styles.topBar}>
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          style={styles.backButton}
+        >
+          <Ionicons name="chevron-back" size={26} color={c.text} />
+        </Pressable>
+
+        <View style={styles.headerTitle}>
+          <Ionicons
+            name={tracker.icon as any}
+            size={22}
+            color={c.primary}
+          />
+          <Text style={[styles.headerTitleText, { color: c.text }]}>
+            {tracker.name}
+          </Text>
+        </View>
+
+        <ThemeToggle style={{ marginRight: 0 }} />
+      </View>
+
+      <ScrollView
+        contentContainerStyle={styles.screen}
+        showsVerticalScrollIndicator={false}
       >
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: c.card, borderColor: c.cardBorder },
+          ]}
+        >
         {/* Header with badges*/}
         <View style={styles.header}>
           <View style={styles.badgeGroup}>
@@ -154,10 +179,26 @@ export default function TrackerDetail() {
         )}
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
+  backButton: {
+    padding: 4,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   screen: {
     paddingVertical: 5,
     paddingHorizontal: 10,

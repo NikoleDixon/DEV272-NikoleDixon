@@ -1,9 +1,10 @@
 // Purpose: Toggle button to change between light and dark colors.
 
 import { colors } from "@/constants/colors";
+import type { StyleProp, ViewStyle } from "react-native";
 import { Appearance, Pressable, StyleSheet, Text, useColorScheme } from "react-native";
 
-export default function Toggle() {
+export default function Toggle({ style }: { style?: StyleProp<ViewStyle> } = {}) {
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
   const c = colors[isDark ? "dark" : "light"];
@@ -21,6 +22,7 @@ export default function Toggle() {
           { 
             backgroundColor: c.primary,
           },
+          style,
         ]}
       >
         <Text style={[styles.label, { color: c.text }]}>
