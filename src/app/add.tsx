@@ -154,7 +154,7 @@ function TextField({
   keyboardType,
 }: TextFieldProps) {
   const c = usePalette();
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<any>(null);
 
   return (
     <Controller
@@ -268,7 +268,7 @@ export default function AddTracker() {
   });
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<any>(null);
 
   // Form submission handler
   const onSubmit = (data: TrackerData) => {

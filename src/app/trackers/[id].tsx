@@ -9,7 +9,7 @@ import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { StyleSheet, Switch, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 
 export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -49,6 +49,10 @@ export default function TrackerDetail() {
   return (
     <View style={[styles.screen, { backgroundColor: c.background }]}>
       <Stack.Screen options={{ title: tracker.name }} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
       <View
         style={[
           styles.card,
@@ -130,6 +134,7 @@ export default function TrackerDetail() {
           </Text>
         )}
       </View>
+      </ScrollView>
     </View>
   );
 }
@@ -138,6 +143,9 @@ const styles = StyleSheet.create({
   screen: { 
     flex: 1, 
     padding: 16,
+  },
+  scrollContent: {
+    gap: 0,
   },
   center: {
     alignItems: "center",
