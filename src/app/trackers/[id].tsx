@@ -4,6 +4,7 @@
 // Future: add in by day tracking with modal/other for different options
 
 import { ErrorView, LoadingView } from "@/components/StatusViews";
+import ThemeToggle from "@/components/ThemeToggle";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
@@ -51,12 +52,17 @@ export default function TrackerDetail() {
         options={{
           headerTitle: () => (
             <View style={styles.headerTitle}>
-              <Ionicons name={tracker.icon as any} size={20} color={c.primary} />
+              <Ionicons
+                name={tracker.icon as any}
+                size={20}
+                color={c.primary}
+              />
               <Text style={[styles.headerTitleText, { color: c.text }]}>
                 {tracker.name}
               </Text>
             </View>
           ),
+          headerRight: () => <ThemeToggle />,
         }}
       />
       <View
@@ -65,7 +71,7 @@ export default function TrackerDetail() {
           { backgroundColor: c.card, borderColor: c.cardBorder },
         ]}
       >
-        {/* Header with badges — name moved to nav header */}
+        {/* Header with badges*/}
         <View style={styles.header}>
           <View style={styles.badgeGroup}>
             <View style={[styles.badge, { backgroundColor: c.primary }]}>
@@ -191,7 +197,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   headerTitleText: {
-    fontSize: 17,
+    fontSize: 24,
     fontWeight: "600",
   },
   name: {
