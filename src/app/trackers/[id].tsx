@@ -63,6 +63,8 @@ export default function TrackerDetail() {
             </View>
           ),
           headerRight: () => <ThemeToggle />,
+          headerStyle: { backgroundColor: c.background },
+          headerShadowVisible: false,
         }}
       />
       <View
