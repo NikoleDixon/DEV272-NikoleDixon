@@ -1,5 +1,5 @@
-// Purpose: Individual Tracker view. Shows all data for tracker selected. 
-// Issue: The tabs are not showing at the bottom. 
+// Purpose: Individual Tracker view. Shows all data for tracker selected.
+// Issue: The tabs are not showing at the bottom.
 // Issue: the light/dark toggle is not showing.
 // Future: add in by day tracking with modal/other for different options
 
@@ -15,17 +15,11 @@ export default function TrackerDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const c = usePalette();
   const { yourtrackers, toggleTracker } = useYourTrackers();
-  const {
-    data: tracker,
-    isPending,
-    isError,
-    error,
-    refetch,
-  } = useTracker(id);
+  const { data: tracker, isPending, isError, error, refetch } = useTracker(id);
 
   if (isPending) return <LoadingView />;
 
-  if (isError) 
+  if (isError)
     return <ErrorView message={error.message} onRetry={() => refetch()} />;
 
   if (!tracker) {
@@ -53,24 +47,38 @@ export default function TrackerDetail() {
       contentInsetAdjustmentBehavior="automatic"
       showsVerticalScrollIndicator={false}
     >
-      <Stack.Screen options={{ title: tracker.name }} />
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <View style={styles.headerTitle}>
+              <Ionicons name={tracker.icon as any} size={20} color={c.primary} />
+              <Text style={[styles.headerTitleText, { color: c.text }]}>
+                {tracker.name}
+              </Text>
+            </View>
+          ),
+        }}
+      />
       <View
         style={[
           styles.card,
           { backgroundColor: c.card, borderColor: c.cardBorder },
         ]}
       >
-        
-{/* Header with icon, title, and badges */}
+        {/* Header with badges — name moved to nav header */}
         <View style={styles.header}>
-          <Ionicons name={tracker.icon as any} size={30} color={c.muted} />
-          <Text style={[styles.name, { color: c.text }]}>{tracker.name}</Text>
-
           <View style={styles.badgeGroup}>
             <View style={[styles.badge, { backgroundColor: c.primary }]}>
-              <Text style={[styles.badgeText, { color: c.text }]}>{tracker.type}</Text>
+              <Text style={[styles.badgeText, { color: c.text }]}>
+                {tracker.type}
+              </Text>
             </View>
-            <View style={[styles.badge, { backgroundColor: isActive ? c.primary : c.muted }]}>
+            <View
+              style={[
+                styles.badge,
+                { backgroundColor: isActive ? c.primary : c.muted },
+              ]}
+            >
               <Text style={[styles.badgeText, { color: c.text }]}>
                 {isActive ? "Active" : "Inactive"}
               </Text>
@@ -78,9 +86,11 @@ export default function TrackerDetail() {
           </View>
         </View>
 
-{/* Active Tracker Switch */}
+        {/* Active Tracker Switch */}
         <View style={styles.switchRow}>
-          <Text style={[styles.switchLabel, { color: c.text }]}>Active Tracker</Text>
+          <Text style={[styles.switchLabel, { color: c.text }]}>
+            Active Tracker
+          </Text>
           <Switch
             value={isActive}
             onValueChange={() => toggleTracker(tracker.id)}
@@ -88,22 +98,22 @@ export default function TrackerDetail() {
             accessibilityLabel="Active Tracker Switch"
           />
         </View>
- 
-{/* Tracker Information with frequency, category, by, date, goal and notes */}
+
+        {/* Tracker Information with frequency, category, by, date, goal and notes */}
         <View style={styles.infoRow}>
           <Ionicons name="calendar-number-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
-             {tracker.frequency}
+            {tracker.frequency}
           </Text>
 
           <Ionicons name="medkit-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
-             {tracker.category}
+            {tracker.category}
           </Text>
 
           <Ionicons name="color-palette-outline" size={18} color={c.muted} />
           <Text style={[styles.infoText, { color: c.muted }]}>
-             {tracker.by}
+            {tracker.by}
           </Text>
         </View>
 
@@ -138,17 +148,18 @@ export default function TrackerDetail() {
     </ScrollView>
   );
 }
- 
+
 const styles = StyleSheet.create({
-  screen: { 
-    padding: 16,
+  screen: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
   center: {
     alignItems: "center",
     justifyContent: "center",
   },
   card: {
-    padding: 20,
+    padding: 15,
     borderRadius: 16,
     borderWidth: 1,
     gap: 12,
@@ -169,13 +180,22 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     gap: 8,
   },
+  headerTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  headerTitleText: {
+    fontSize: 17,
+    fontWeight: "600",
+  },
   name: {
-    flex: 1, 
+    flex: 1,
     fontSize: 22,
     fontWeight: "700",
     marginRight: 12,
