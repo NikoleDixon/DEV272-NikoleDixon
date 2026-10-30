@@ -134,7 +134,7 @@ export default function TrackerDetail() {
               </View>
             </View>
 
-            <View style={styles.actionGroup}>
+            <View style={styles.action}>
               <Pressable
                 onPress={() => {
                   // Functionality to be added later
@@ -150,18 +150,20 @@ export default function TrackerDetail() {
                 <Ionicons name="pencil-outline" size={20} color={c.text} />
               </Pressable>
 
-              <Pressable
-                onPress={() => setShowDeleteModal(true)}
-                hitSlop={8}
-                accessibilityRole="button"
-                accessibilityLabel="Delete tracker data"
-                style={({ pressed }) => [
-                  styles.actionButton,
-                  pressed && { opacity: 0.6 },
-                ]}
-              >
-                <Ionicons name="trash-outline" size={20} color={c.danger} />
-              </Pressable>
+              {isActive && (
+                <Pressable
+                  onPress={() => setShowDeleteModal(true)}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel="Delete tracker data"
+                  style={({ pressed }) => [
+                    styles.actionButton,
+                    pressed && { opacity: 0.6 },
+                  ]}
+                >
+                  <Ionicons name="trash-outline" size={20} color={c.danger} />
+                </Pressable>
+              )}
             </View>
           </View>
 
@@ -256,7 +258,7 @@ export default function TrackerDetail() {
             </View>
 
             <Text style={[styles.modalMessage, { color: c.muted }]}>
-              Are you sure? This will remove this tracker from your active trackers and clear your local data for it. This will not delete the tracker from Supabase.
+              Are you sure? This will remove this tracker from your active trackers and clear your local data for it. This will not delete the tracker from being used again.
             </Text>
 
             <View style={styles.modalActions}>
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  actionGroup: {
+  action: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
