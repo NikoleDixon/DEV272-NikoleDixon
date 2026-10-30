@@ -47,12 +47,13 @@ export default function TrackerDetail() {
   const isActive = yourtrackers.includes(tracker.id);
 
   return (
-    <View style={[styles.screen, { backgroundColor: c.background }]}>
+    <ScrollView
+      style={{ backgroundColor: c.background }}
+      contentContainerStyle={styles.screen}
+      contentInsetAdjustmentBehavior="automatic"
+      showsVerticalScrollIndicator={false}
+    >
       <Stack.Screen options={{ title: tracker.name }} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
       <View
         style={[
           styles.card,
@@ -134,18 +135,13 @@ export default function TrackerDetail() {
           </Text>
         )}
       </View>
-      </ScrollView>
-    </View>
+    </ScrollView>
   );
 }
  
 const styles = StyleSheet.create({
   screen: { 
-    flex: 1, 
     padding: 16,
-  },
-  scrollContent: {
-    gap: 0,
   },
   center: {
     alignItems: "center",
