@@ -1,5 +1,6 @@
 allowBuilds:
   "@parcel/watcher": true
+  pnpm: true
   unrs-resolver: false
 minimumReleaseAgeExclude:
   - "@expo/cli@58.1.16"
