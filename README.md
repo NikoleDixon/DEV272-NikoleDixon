@@ -240,3 +240,31 @@ Verify that there are zero TypeScript compiler errors:
 ```bash
 pnpm exec tsc --noEmit
 ```
+
+## 12. Scripts
+
+The following commands are used for development, testing, linting, formatting, and verifying code quality across the project:
+
+| Command                  | Purpose                                           |
+| ------------------------ | ------------------------------------------------- |
+| `pnpm start`             | Start the Expo development server                 |
+| `pnpm lint`              | Run ESLint check with Expo config                 |
+| `pnpm lint:fix`          | Automatically fix autofixable ESLint errors       |
+| `pnpm format`            | Format all files across the project with Prettier |
+| `pnpm format:check`      | Verify that all files match Prettier code style   |
+| `pnpm exec tsc --noEmit` | Type check the entire project with TypeScript     |
+| `pnpm test`              | Run all unit tests with Jest                      |
+
+## 12. Scripts
+
+The below commands are used for development, testing, linting, formatting, and verifying code quality across the project:
+
+| Command                  | Purpose                                           |
+| ------------------------ | ------------------------------------------------- |
+| `pnpm start`             | Start the Expo development server                 |
+| `pnpm lint`              | Run ESLint check with Expo config                 |
+| `pnpm lint:fix`          | Automatically fix autofixable ESLint errors       |
+| `pnpm format`            | Format all files across the project with Prettier |
+| `pnpm format:check`      | Verify that all files match Prettier code style   |
+| `pnpm exec tsc --noEmit` | Type check the entire project with TypeScript     |
+| `pnpm test`              | Run all unit tests with Jest                      |

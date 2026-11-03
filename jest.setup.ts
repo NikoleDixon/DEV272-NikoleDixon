@@ -13,3 +13,21 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);
 // tests mock the API and never contact Supabase. Your real keys stay in .env.
 process.env.EXPO_PUBLIC_SUPABASE_URL = "https://test.supabase.co";
 process.env.EXPO_PUBLIC_SUPABASE_KEY = "sb_publishable_test";
+
+// Mock icon font loading doesn't fail in tests
+jest.mock("@expo/vector-icons", () => {
+  const { View } = require("react-native");
+  return {
+    __esModule: true,
+    default: View,
+    Ionicons: View,
+  };
+});
+
+jest.mock("@expo/vector-icons/Ionicons", () => {
+  const { View } = require("react-native");
+  return {
+    __esModule: true,
+    default: View,
+  };
+});
