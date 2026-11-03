@@ -1,6 +1,7 @@
 // Purpose: Each tracker will show in a card. Used on search trackers and Your Trackers.
 
 import { Tracker } from "@/api/trackers";
+import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
@@ -9,13 +10,15 @@ import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 export function TrackerRow({ tracker }: { tracker: Tracker }) {
   const c = usePalette();
   const router = useRouter();
+  const { getEffectiveTracker } = useYourTrackers();
+  const item = getEffectiveTracker(tracker);
 
   return (
     <Pressable
       onPress={() =>
         router.push({
           pathname: "/trackers/[id]",
-          params: { id: tracker.id },
+          params: { id: item.id },
         })
       }
       style={({ pressed }) => [
@@ -24,17 +27,17 @@ export function TrackerRow({ tracker }: { tracker: Tracker }) {
         pressed && styles.pressed,
       ]}
     >
-      <Ionicons name={tracker.icon as any} size={28} color={c.primary} />
+      <Ionicons name={item.icon as any} size={28} color={c.primary} />
       <View style={styles.cardMain}>
         <Text style={[styles.cardTitle, { color: c.text }]}>
-          {tracker.name}
+          {item.name}
         </Text>
         <Text style={[styles.cardSubtitle, { color: c.muted }]}>
-          {tracker.type}
+          {item.type}
         </Text>
       </View>
       <Text style={[styles.frequency, { color: c.muted }]}>
-        {tracker.frequency}
+        {item.frequency}
       </Text>
     </Pressable>
   );

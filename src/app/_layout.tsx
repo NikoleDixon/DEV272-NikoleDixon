@@ -10,38 +10,41 @@ import { useColorScheme } from "react-native";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,   // data is "fresh" for a minute; no refetch on remount during that window
-      retry: 1,               // one retry on failure before showing the error
+      staleTime: 60 * 1000, // data is "fresh" for a minute; no refetch on remount during that window
+      retry: 1, // one retry on failure before showing the error
     },
   },
 });
 
 export default function RootLayout() {
-  const scheme = useColorScheme()
-  
+  const scheme = useColorScheme();
+
   return (
     <ThemeProvider value={scheme === "dark" ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
         <YourTrackersProvider>
-          <StatusBar style="auto"/>
+          <StatusBar style="auto" />
           <Stack>
-            <Stack.Screen 
-              name="(tabs)" 
-              options={{ headerShown: false }} 
-            />
-            <Stack.Screen 
-              name="trackers/[id]" 
-              options={{ 
-                title: "Hummingbird Bullet Journal", 
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="trackers/[id]"
+              options={{
+                title: "Hummingbird Bullet Journal",
                 headerBackButtonDisplayMode: "minimal",
               }}
             />
-            <Stack.Screen 
-              name="add" 
-              options={{ 
-                title: "New tracker", 
+            <Stack.Screen
+              name="trackers/add"
+              options={{
+                title: "New tracker",
                 headerBackButtonDisplayMode: "minimal",
                 gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="trackers/edit"
+              options={{
+                headerShown: false,
               }}
             />
           </Stack>

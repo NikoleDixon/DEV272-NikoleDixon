@@ -14,7 +14,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: "Search Trackers",
+                    title: "Home",
                     headerTitle: () => (
                         <View style={{ 
                             display: "flex",
@@ -42,14 +42,14 @@ export default function TabLayout() {
                     tabBarActiveBackgroundColor: c.primary,
                     tabBarInactiveBackgroundColor: c.card,
                     tabBarIcon: ({ size }) => (
-                        <Ionicons name="list-outline" color={c.text} size={size} />
+                        <Ionicons name="home-outline" color={c.text} size={size} />
                     ),
                 }}
             />
             <Tabs.Screen
-                name="yourtrackers"
+                name="discover"
                 options={{
-                    title: "Your Trackers",
+                    title: "Discover",
                     headerTitle: () => (
                         <View style={{ 
                             display: "flex",
@@ -76,8 +76,8 @@ export default function TabLayout() {
                     tabBarActiveTintColor: c.text,         
                     tabBarActiveBackgroundColor: c.primary,
                     tabBarInactiveBackgroundColor: c.card,         
-                    tabBarIcon: ({ size}) => (
-                        <Ionicons name="checkbox-outline" color={c.text} size={size} />
+                    tabBarIcon: ({ size }) => (
+                        <Ionicons name="search-outline" color={c.text} size={size} />
                     ),
                 }}
             />

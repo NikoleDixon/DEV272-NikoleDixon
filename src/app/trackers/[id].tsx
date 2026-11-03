@@ -10,9 +10,7 @@ import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
 import {
-  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -27,9 +25,9 @@ export default function TrackerDetail() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const c = usePalette();
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { yourtrackers, toggleTracker, setTrackerActive } = useYourTrackers();
-  const { data: tracker, isPending, isError, error, refetch } = useTracker(id);
+  const { yourtrackers, toggleTracker, getEffectiveTracker } = useYourTrackers();
+  const { data: rawTracker, isPending, isError, error, refetch } = useTracker(id);
+  const tracker = rawTracker ? getEffectiveTracker(rawTracker) : null;
 
   if (isPending) return <LoadingView />;
 
@@ -118,7 +116,7 @@ export default function TrackerDetail() {
           <View style={styles.header}>
             <View style={styles.badgeGroup}>
               <View style={[styles.badge, { backgroundColor: c.primary }]}>
-                <Text style={[styles.badgeText, { color: c.text }]}>
+                <Text style={[styles.badgeText, { color: c.background }]}>
                   {tracker.type}
                 </Text>
               </View>
@@ -128,7 +126,7 @@ export default function TrackerDetail() {
                   { backgroundColor: isActive ? c.primary : c.muted },
                 ]}
               >
-                <Text style={[styles.badgeText, { color: c.text }]}>
+                <Text style={[styles.badgeText, { color: c.background }]}>
                   {isActive ? "Active" : "Inactive"}
                 </Text>
               </View>
@@ -136,9 +134,12 @@ export default function TrackerDetail() {
 
             <View style={styles.action}>
               <Pressable
-                onPress={() => {
-                  // Functionality to be added later
-                }}
+                onPress={() =>
+                  router.push({
+                    pathname: "/trackers/edit",
+                    params: { id: tracker.id },
+                  })
+                }
                 hitSlop={8}
                 accessibilityRole="button"
                 accessibilityLabel="Edit tracker"
@@ -147,23 +148,8 @@ export default function TrackerDetail() {
                   pressed && { opacity: 0.6 },
                 ]}
               >
-                <Ionicons name="pencil-outline" size={20} color={c.text} />
+                <Ionicons name="create-outline" size={20} color={c.text} />
               </Pressable>
-
-              {isActive && (
-                <Pressable
-                  onPress={() => setShowDeleteModal(true)}
-                  hitSlop={8}
-                  accessibilityRole="button"
-                  accessibilityLabel="Delete tracker data"
-                  style={({ pressed }) => [
-                    styles.actionButton,
-                    pressed && { opacity: 0.6 },
-                  ]}
-                >
-                  <Ionicons name="trash-outline" size={20} color={c.danger} />
-                </Pressable>
-              )}
             </View>
           </View>
 
@@ -231,72 +217,6 @@ export default function TrackerDetail() {
           )}
         </View>
       </ScrollView>
-
-      {/* Delete Confirmation Modal */}
-      <Modal
-        visible={showDeleteModal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowDeleteModal(false)}
-      >
-        <Pressable
-          style={styles.modalOverlay}
-          onPress={() => setShowDeleteModal(false)}
-        >
-          <Pressable
-            style={[
-              styles.modalCard,
-              { backgroundColor: c.card, borderColor: c.cardBorder },
-            ]}
-            onPress={(e) => e.stopPropagation()}
-          >
-            <View style={styles.modalHeader}>
-              <Ionicons name="warning-outline" size={24} color={c.danger} />
-              <Text style={[styles.modalTitle, { color: c.text }]}>
-                Delete Tracker Data?
-              </Text>
-            </View>
-
-            <Text style={[styles.modalMessage, { color: c.muted }]}>
-              Are you sure? This will remove this tracker from your active trackers and clear your local data for it. This will not delete the tracker from being used again.
-            </Text>
-
-            <View style={styles.modalActions}>
-              <Pressable
-                style={[
-                  styles.modalButton,
-                  { borderColor: c.border, backgroundColor: "transparent" },
-                ]}
-                onPress={() => setShowDeleteModal(false)}
-                accessibilityRole="button"
-                accessibilityLabel="Cancel"
-              >
-                <Text style={[styles.modalButtonText, { color: c.text }]}>
-                  Cancel
-                </Text>
-              </Pressable>
-
-              <Pressable
-                style={[
-                  styles.modalButton,
-                  { borderColor: c.danger, backgroundColor: c.danger },
-                ]}
-                onPress={() => {
-                  setTrackerActive(tracker.id, false);
-                  setShowDeleteModal(false);
-                  router.back();
-                }}
-                accessibilityRole="button"
-                accessibilityLabel="Confirm delete"
-              >
-                <Text style={[styles.modalButtonText, { color: "#ffffff" }]}>
-                  Delete
-                </Text>
-              </Pressable>
-            </View>
-          </Pressable>
-        </Pressable>
-      </Modal>
     </View>
   );
 }
@@ -343,7 +263,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   badgeText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "600",
   },
   header: {
@@ -360,50 +280,6 @@ const styles = StyleSheet.create({
     padding: 4,
     justifyContent: "center",
     alignItems: "center",
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-  },
-  modalCard: {
-    width: "100%",
-    maxWidth: 340,
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 20,
-    gap: 12,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-  },
-  modalMessage: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  modalActions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 10,
-    marginTop: 8,
-  },
-  modalButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  modalButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
   },
   headerTitle: {
     flexDirection: "row",
