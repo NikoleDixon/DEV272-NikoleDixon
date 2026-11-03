@@ -67,4 +67,10 @@ describe("trackerSchema", () => {
   ])("rejects goal %p", (goal, message) => {
     expect(errorFor({ ...valid, goal }, "goal")).toBe(message);
   });
+
+  // Extra test to fix for the commit fix requirement
+  test("requires a category", () => {
+    const values = { ...valid, category: "" };
+    expect(errorFor(values, "category")).toBe("Category is required.");
+  });
 });
