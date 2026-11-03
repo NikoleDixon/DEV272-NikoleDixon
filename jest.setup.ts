@@ -5,7 +5,6 @@
 // AsyncStorage is native code. Use the in-memory fake the library ships for Jest.
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const jest: any;
 
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);

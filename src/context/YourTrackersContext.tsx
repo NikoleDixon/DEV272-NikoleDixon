@@ -2,7 +2,13 @@
 
 import type { Tracker } from "@/api/trackers";
 import { loadJson, saveJson, STORAGE_KEYS } from "@/lib/storage";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 type YourTrackersContextValue = {
   yourtrackers: string[];
@@ -14,18 +20,25 @@ type YourTrackersContextValue = {
   getEffectiveTracker: (tracker: Tracker) => Tracker;
 };
 
-const YourTrackersContext = createContext<YourTrackersContextValue | null>(null);
+const YourTrackersContext = createContext<YourTrackersContextValue | null>(
+  null,
+);
 
 export function YourTrackersProvider({ children }: { children: ReactNode }) {
   const [yourtrackers, setYourTrackers] = useState<string[]>([]);
-  const [trackerOverrides, setTrackerOverrides] = useState<Record<string, Partial<Tracker>>>({});
+  const [trackerOverrides, setTrackerOverrides] = useState<
+    Record<string, Partial<Tracker>>
+  >({});
   const [hydrated, setHydrated] = useState(false);
 
   // 1. Hydrate on mount: load saved tracker IDs and overrides from AsyncStorage when the app opens
   useEffect(() => {
     Promise.all([
       loadJson<string[]>(STORAGE_KEYS.yourTrackers, []),
-      loadJson<Record<string, Partial<Tracker>>>(STORAGE_KEYS.trackerOverrides, {}),
+      loadJson<Record<string, Partial<Tracker>>>(
+        STORAGE_KEYS.trackerOverrides,
+        {},
+      ),
     ]).then(([storedTrackers, storedOverrides]) => {
       setYourTrackers(storedTrackers);
       setTrackerOverrides(storedOverrides);
@@ -49,7 +62,7 @@ export function YourTrackersProvider({ children }: { children: ReactNode }) {
     setYourTrackers((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
-        : [...current, id]
+        : [...current, id],
     );
   };
 
@@ -116,6 +129,7 @@ export function YourTrackersProvider({ children }: { children: ReactNode }) {
 
 export function useYourTrackers() {
   const ctx = useContext(YourTrackersContext);
-  if (!ctx) throw new Error("useYourTrackers must be used inside YourTrackersProvider");
+  if (!ctx)
+    throw new Error("useYourTrackers must be used inside YourTrackersProvider");
   return ctx;
 }

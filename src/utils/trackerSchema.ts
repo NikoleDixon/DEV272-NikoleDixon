@@ -11,28 +11,37 @@ const isRealDate = (s: string) => {
 };
 
 export const trackerSchema = z.object({
-  name: z.string().trim()
+  name: z
+    .string()
+    .trim()
     .min(1, "Tracker Name is required.")
     .min(2, "Tracker Name must be at least 2 characters."),
-    
+
   category: z.string().min(1, "Category is required."),
   type: z.string().min(1, "Type is required."),
   frequency: z.string().min(1, "Frequency is required."),
   by: z.string().min(1, "By is required."),
 
-  date: z.string()
+  date: z
+    .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date is required.")
     .refine(isRealDate, "Enter a valid date."),
 
-  goal: z.string().trim()
+  goal: z
+    .string()
+    .trim()
     .min(1, "Goal is required.")
     .refine((s) => /^\d+$/.test(s), "Goal must be a whole number.")
-    .refine((s) => Number(s) >= GOAL_MIN && Number(s) <= GOAL_MAX,
-      `Goal must be between ${GOAL_MIN} and ${GOAL_MAX}.`),
+    .refine(
+      (s) => Number(s) >= GOAL_MIN && Number(s) <= GOAL_MAX,
+      `Goal must be between ${GOAL_MIN} and ${GOAL_MAX}.`,
+    ),
 
   icon: z.string(),
   active: z.boolean(),
-  notes: z.string().max(NOTES_MAX, `Notes must be ${NOTES_MAX} characters or fewer.`),
+  notes: z
+    .string()
+    .max(NOTES_MAX, `Notes must be ${NOTES_MAX} characters or fewer.`),
 });
 
 export type AddTrackerFormValues = z.infer<typeof trackerSchema>;

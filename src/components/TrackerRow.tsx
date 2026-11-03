@@ -29,9 +29,7 @@ export function TrackerRow({ tracker }: { tracker: Tracker }) {
     >
       <Ionicons name={item.icon as any} size={28} color={c.primary} />
       <View style={styles.cardMain}>
-        <Text style={[styles.cardTitle, { color: c.text }]}>
-          {item.name}
-        </Text>
+        <Text style={[styles.cardTitle, { color: c.text }]}>{item.name}</Text>
         <Text style={[styles.cardSubtitle, { color: c.muted }]}>
           {item.type}
         </Text>

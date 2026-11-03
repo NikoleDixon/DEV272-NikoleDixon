@@ -3,8 +3,7 @@ name: ✨ Feature Request
 about: Suggest a new feature or improvement for the application
 title: "[FEATURE] <Short descriptive title>"
 labels: enhancement
-assignees: ''
-
+assignees: ""
 ---
 
 ## 🌟 Feature Summary
@@ -49,4 +48,3 @@ _When is this feature considered complete?_
 - [ ] Stored preferences persist across sessions
 
 ---
-

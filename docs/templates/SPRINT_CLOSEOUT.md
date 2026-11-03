@@ -50,10 +50,11 @@
 - …
 
 **Action items for next sprint**
-| Action | Owner | Done by |
-| --- | --- | --- |
+
+| Action                                            | Owner    | Done by    |
+| ------------------------------------------------- | -------- | ---------- |
 | Open PRs by Sunday so reviews land before Tuesday | everyone | Sprint N+1 |
-| … | | |
+| …                                                 |          |            |
 
 ## 6. Next sprint priorities
 

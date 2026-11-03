@@ -34,24 +34,21 @@ export default function DiscoverScreen() {
 
   const q = query.trim().toLowerCase();
   const filtered = trackers?.filter(
-    (t) =>
-      t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q)
+    (t) => t.name.toLowerCase().includes(q) || t.type.toLowerCase().includes(q),
   );
 
   if (isPending) return <LoadingView />;
 
-  if (isError) 
+  if (isError)
     return <ErrorView message={error.message} onRetry={() => refetch()} />;
 
   return (
     <View style={[styles.screen, { backgroundColor: c.background }]}>
-      <FlatList 
+      <FlatList
         data={filtered}
         keyExtractor={(t) => t.id}
         renderItem={({ item }) => <TrackerRow tracker={item} />}
-        ListHeaderComponent={
-          <Header query={query} onChangeQuery={setQuery} />
-        }
+        ListHeaderComponent={<Header query={query} onChangeQuery={setQuery} />}
         ListEmptyComponent={
           <View style={[styles.center, { padding: 32 }]}>
             <Ionicons name="file-tray-outline" size={40} color={c.muted} />
@@ -61,7 +58,12 @@ export default function DiscoverScreen() {
           </View>
         }
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={() => { refetch(); }} />
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+            }}
+          />
         }
         contentContainerStyle={styles.list}
       />
@@ -74,7 +76,7 @@ export default function DiscoverScreen() {
           { backgroundColor: c.primary, opacity: pressed ? 0.7 : 1 },
         ]}
       >
-        <Ionicons name={"add-outline"} size={30} color={c.text}/>
+        <Ionicons name={"add-outline"} size={30} color={c.text} />
       </Pressable>
     </View>
   );
@@ -87,7 +89,7 @@ type HeaderProps = {
 
 function Header({ query, onChangeQuery }: HeaderProps) {
   const c = usePalette();
-  
+
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: c.text }]}>
@@ -96,11 +98,8 @@ function Header({ query, onChangeQuery }: HeaderProps) {
       <View style={styles.row}>
         <TextInput
           style={[
-            styles.input, 
-            { borderColor: c.primary, 
-              color: c.text, 
-              backgroundColor: c.card, 
-            },
+            styles.input,
+            { borderColor: c.primary, color: c.text, backgroundColor: c.card },
           ]}
           placeholder="Search trackers"
           placeholderTextColor={c.muted}
@@ -117,7 +116,7 @@ function Header({ query, onChangeQuery }: HeaderProps) {
         </Pressable>
       </View>
       <Text style={{ color: c.muted }}>
-         {query ? `Matching "${query}"` : "All Trackers"}
+        {query ? `Matching "${query}"` : "All Trackers"}
       </Text>
     </View>
   );
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
   },
-  list: { 
+  list: {
     padding: 15,
     gap: 8,
   },
@@ -170,9 +169,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 4,
   },
-  row: { 
-    flexDirection: "row", 
-    gap: 8, 
+  row: {
+    flexDirection: "row",
+    gap: 8,
     alignItems: "center",
   },
   input: {
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 0.5,
   },
-  buttonText: { 
+  buttonText: {
     fontWeight: "600",
   },
   add: {

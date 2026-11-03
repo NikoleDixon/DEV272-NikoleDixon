@@ -5,7 +5,11 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
-import { AddTrackerFormValues, TrackerData, trackerSchema } from "@/utils/trackerSchema";
+import {
+  AddTrackerFormValues,
+  TrackerData,
+  trackerSchema,
+} from "@/utils/trackerSchema";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -39,7 +43,15 @@ const fromDateString = (s: string) => {
 };
 
 // Dropdown Options (matching add.tsx)
-const CATEGORY_OPTIONS = ["Mental Health", "Physical Health", "Sleep", "Nutrition", "Fitness", "Medication", "Other"];
+const CATEGORY_OPTIONS = [
+  "Mental Health",
+  "Physical Health",
+  "Sleep",
+  "Nutrition",
+  "Fitness",
+  "Medication",
+  "Other",
+];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
 const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
 const BY_OPTIONS = ["By color", "By text"];
@@ -55,7 +67,15 @@ type SelectProps = {
   accessibilityLabel: string;
 };
 
-function Select({ value, options, placeholder, onSelect, onClose, hasError, accessibilityLabel }: SelectProps) {
+function Select({
+  value,
+  options,
+  placeholder,
+  onSelect,
+  onClose,
+  hasError,
+  accessibilityLabel,
+}: SelectProps) {
   const c = usePalette();
   const [open, setOpen] = useState(false);
 
@@ -70,7 +90,10 @@ function Select({ value, options, placeholder, onSelect, onClose, hasError, acce
         style={[
           styles.input,
           styles.dateButton,
-          { backgroundColor: c.card, borderColor: hasError ? c.danger : c.border },
+          {
+            backgroundColor: c.card,
+            borderColor: hasError ? c.danger : c.border,
+          },
         ]}
         onPress={() => setOpen(true)}
         accessibilityRole="button"
@@ -83,9 +106,19 @@ function Select({ value, options, placeholder, onSelect, onClose, hasError, acce
         <Ionicons name="chevron-down" size={20} color={c.muted} />
       </Pressable>
 
-      <Modal visible={open} transparent animationType="fade" onRequestClose={close}>
+      <Modal
+        visible={open}
+        transparent
+        animationType="fade"
+        onRequestClose={close}
+      >
         <Pressable style={styles.backdrop} onPress={close}>
-          <View style={[styles.sheet, { backgroundColor: c.card, borderColor: c.border }]}>
+          <View
+            style={[
+              styles.sheet,
+              { backgroundColor: c.card, borderColor: c.border },
+            ]}
+          >
             <FlatList
               data={options}
               keyExtractor={(o) => o}
@@ -147,7 +180,12 @@ function TextField({
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => (
-        <Field label={label} error={error?.message} hint={hint} onPress={() => inputRef.current?.focus()}>
+        <Field
+          label={label}
+          error={error?.message}
+          hint={hint}
+          onPress={() => inputRef.current?.focus()}
+        >
           <TextInput
             ref={inputRef}
             style={[
@@ -258,8 +296,20 @@ export default function EditTracker() {
   const c = usePalette();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { yourtrackers, setTrackerActive, updateTrackerOverride, deleteTrackerData, getEffectiveTracker } = useYourTrackers();
-  const { data: rawTracker, isPending, isError, error, refetch } = useTracker(id);
+  const {
+    yourtrackers,
+    setTrackerActive,
+    updateTrackerOverride,
+    deleteTrackerData,
+    getEffectiveTracker,
+  } = useYourTrackers();
+  const {
+    data: rawTracker,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useTracker(id);
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -273,17 +323,35 @@ export default function EditTracker() {
 
   if (!rawTracker) {
     return (
-      <View style={[styles.container, { backgroundColor: c.background, paddingTop: insets.top }]}>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: c.background, paddingTop: insets.top },
+        ]}
+      >
         <Stack.Screen options={{ headerShown: false }} />
         <View style={styles.topBar}>
-          <Pressable onPress={() => router.back()} hitSlop={12} style={styles.backButton}>
+          <Pressable
+            onPress={() => router.back()}
+            hitSlop={12}
+            style={styles.backButton}
+          >
             <Ionicons name="chevron-back" size={26} color={c.text} />
           </Pressable>
         </View>
         <View style={styles.form}>
-          <View style={[styles.sheet, { padding: 20, backgroundColor: c.card, borderColor: c.border }]}>
-            <Text style={{ color: c.text, fontSize: 18, fontWeight: "600" }}>Tracker Not Found</Text>
-            <Text style={{ color: c.muted, marginTop: 8 }}>No tracker found with id {id}.</Text>
+          <View
+            style={[
+              styles.sheet,
+              { padding: 20, backgroundColor: c.card, borderColor: c.border },
+            ]}
+          >
+            <Text style={{ color: c.text, fontSize: 18, fontWeight: "600" }}>
+              Tracker Not Found
+            </Text>
+            <Text style={{ color: c.muted, marginTop: 8 }}>
+              No tracker found with id {id}.
+            </Text>
           </View>
         </View>
       </View>
@@ -359,10 +427,11 @@ function EditTrackerForm({
   onSave,
   onDelete,
 }: EditTrackerFormProps) {
-  const {
-    control,
-    handleSubmit,
-  } = useForm<AddTrackerFormValues, unknown, TrackerData>({
+  const { control, handleSubmit } = useForm<
+    AddTrackerFormValues,
+    unknown,
+    TrackerData
+  >({
     resolver: zodResolver(trackerSchema),
     defaultValues: {
       name: tracker.name ?? "",
@@ -387,7 +456,12 @@ function EditTrackerForm({
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: c.background, paddingTop: insets.top }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: c.background, paddingTop: insets.top },
+      ]}
+    >
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Custom Top Navigation Bar */}
@@ -419,7 +493,10 @@ function EditTrackerForm({
       >
         <ScrollView
           ref={scrollViewRef}
-          contentContainerStyle={[styles.form, { backgroundColor: c.background }]}
+          contentContainerStyle={[
+            styles.form,
+            { backgroundColor: c.background },
+          ]}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           automaticallyAdjustKeyboardInsets={true}
@@ -430,7 +507,9 @@ function EditTrackerForm({
             name="active"
             render={({ field: { onChange, value } }) => (
               <View style={styles.switchRow}>
-                <Text style={[styles.label, { color: c.text }]}>Active Tracker</Text>
+                <Text style={[styles.label, { color: c.text }]}>
+                  Active Tracker
+                </Text>
                 <Switch
                   value={Boolean(value)}
                   onValueChange={onChange}
@@ -517,7 +596,9 @@ function EditTrackerForm({
                   }}
                   accessibilityRole="button"
                 >
-                  <Text style={{ color: value ? c.text : c.muted, fontSize: 16 }}>
+                  <Text
+                    style={{ color: value ? c.text : c.muted, fontSize: 16 }}
+                  >
                     {value || toDateString(new Date())}
                   </Text>
                   <Ionicons name="calendar-outline" size={20} color={c.muted} />
@@ -532,12 +613,17 @@ function EditTrackerForm({
                       ]}
                     >
                       <DateTimePicker
-                        value={fromDateString(value || toDateString(new Date()))}
+                        value={fromDateString(
+                          value || toDateString(new Date()),
+                        )}
                         mode="date"
                         display="spinner"
                         textColor={c.text}
                         themeVariant={c.text === "#f9fafb" ? "dark" : "light"}
-                        onChange={(event: DateTimePickerEvent, selected?: Date) => {
+                        onChange={(
+                          event: DateTimePickerEvent,
+                          selected?: Date,
+                        ) => {
                           if (selected) {
                             onChange(toDateString(selected));
                           }
@@ -549,7 +635,10 @@ function EditTrackerForm({
                       value={fromDateString(value || toDateString(new Date()))}
                       mode="date"
                       display="default"
-                      onChange={(event: DateTimePickerEvent, selected?: Date) => {
+                      onChange={(
+                        event: DateTimePickerEvent,
+                        selected?: Date,
+                      ) => {
                         setShowDatePicker(false);
                         if (event.type === "set" && selected) {
                           onChange(toDateString(selected));
@@ -576,11 +665,16 @@ function EditTrackerForm({
           <View style={styles.actionsContainer}>
             {/* Save Changes Button */}
             <Pressable
-              style={[styles.save, { backgroundColor: c.primary, borderColor: c.border }]}
+              style={[
+                styles.save,
+                { backgroundColor: c.primary, borderColor: c.border },
+              ]}
               onPress={handleSave}
               accessibilityRole="button"
             >
-              <Text style={[styles.saveText, { color: c.text }]}>Save Changes</Text>
+              <Text style={[styles.saveText, { color: c.text }]}>
+                Save Changes
+              </Text>
             </Pressable>
 
             {/* Delete Tracker Data Button */}
@@ -809,4 +903,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-

@@ -13,14 +13,14 @@ This is the starting point for every individual assignment in Weeks 1–6. You c
 
 ## 1. Prerequisites (do this before Week 1 class if you can)
 
-| Tool | What to install | Check it works |
-| --- | --- | --- |
-| Node.js (LTS) | https://nodejs.org — pick the **LTS** download | `node --version` prints `v22.x` or `v24.x` |
-| pnpm | `npm install -g pnpm` | `pnpm --version` prints `10.x` or higher |
-| Git | https://git-scm.com/downloads (macOS: comes with Xcode Command Line Tools) | `git --version` |
-| GitHub account | Sign up through the **Student Developer Pack** at https://education.github.com/pack using your **BC email**. Already have an account? Add your BC email in Settings → Emails and apply for the pack; do not make a second account. | You can sign in |
-| VS Code | https://code.visualstudio.com | Open it. Install the **Expo Tools** extension when prompted |
-| A way to run the app | **One** of the options below | See section 3 |
+| Tool                 | What to install                                                                                                                                                                                                                    | Check it works                                              |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Node.js (LTS)        | https://nodejs.org — pick the **LTS** download                                                                                                                                                                                     | `node --version` prints `v22.x` or `v24.x`                  |
+| pnpm                 | `npm install -g pnpm`                                                                                                                                                                                                              | `pnpm --version` prints `10.x` or higher                    |
+| Git                  | https://git-scm.com/downloads (macOS: comes with Xcode Command Line Tools)                                                                                                                                                         | `git --version`                                             |
+| GitHub account       | Sign up through the **Student Developer Pack** at https://education.github.com/pack using your **BC email**. Already have an account? Add your BC email in Settings → Emails and apply for the pack; do not make a second account. | You can sign in                                             |
+| VS Code              | https://code.visualstudio.com                                                                                                                                                                                                      | Open it. Install the **Expo Tools** extension when prompted |
+| A way to run the app | **One** of the options below                                                                                                                                                                                                       | See section 3                                               |
 
 **Windows users:** run all commands in PowerShell or Windows Terminal. Do not use Git Bash for `pnpm start`.
 
@@ -48,12 +48,12 @@ pnpm start
 
 Expo prints a QR code and a menu. Pick one way to see the app:
 
-| Option | How | Notes |
-| --- | --- | --- |
-| **Your phone (Expo Go)** | Install **Expo Go** from the App Store / Play Store. Scan the QR code (iPhone: Camera app; Android: inside Expo Go). Phone and computer must be on the same Wi-Fi. | Fastest to set up. Expo Go must support **SDK 57** — check the app's version in the store listing. If the store version lags, use a simulator (below) for now. |
-| **iOS Simulator** (Mac only) | Install Xcode from the App Store, open it once to finish setup, then press `i` in the Expo terminal. | Large download. |
-| **Android Emulator** | Install Android Studio, create a device in Device Manager, start it, then press `a` in the Expo terminal. | Works on Mac, Windows, Linux. |
-| **Web browser** | Press `w`. | Handy for quick checks. Not a substitute for a device or simulator on assignments. |
+| Option                       | How                                                                                                                                                                | Notes                                                                                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Your phone (Expo Go)**     | Install **Expo Go** from the App Store / Play Store. Scan the QR code (iPhone: Camera app; Android: inside Expo Go). Phone and computer must be on the same Wi-Fi. | Fastest to set up. Expo Go must support **SDK 57** — check the app's version in the store listing. If the store version lags, use a simulator (below) for now. |
+| **iOS Simulator** (Mac only) | Install Xcode from the App Store, open it once to finish setup, then press `i` in the Expo terminal.                                                               | Large download.                                                                                                                                                |
+| **Android Emulator**         | Install Android Studio, create a device in Device Manager, start it, then press `a` in the Expo terminal.                                                          | Works on Mac, Windows, Linux.                                                                                                                                  |
+| **Web browser**              | Press `w`.                                                                                                                                                         | Handy for quick checks. Not a substitute for a device or simulator on assignments.                                                                             |
 
 You should see the DEV 272 home screen. Leave `pnpm start` running while you work. Saving a file reloads the app automatically. Press `r` in the terminal to reload manually, `?` to see all commands.
 
@@ -88,14 +88,14 @@ pnpm start               # App starts and the screen renders
 
 ## 6. What you will add, week by week
 
-| Week | Topic | You add to this repo |
-| --- | --- | --- |
-| 1 | Setup | Your copy of the template, running, with a personalized home screen |
-| 2 | React Native fundamentals | A landing screen built from core components (Text, TextInput, Button, ScrollView) and Flexbox layout |
-| 3 | Navigation and state | Expo Router stack + tabs, a detail screen that receives route params, `useState`/`useEffect` state |
-| 4 | User input | A form with validation that creates items held in state |
-| 5 | Data and storage | Supabase as the remote database, TanStack Query for fetching/caching, AsyncStorage for local persistence |
-| 6 | Code quality and testing | ESLint + Prettier, Husky pre-commit hook, Jest + React Native Testing Library unit tests |
+| Week | Topic                     | You add to this repo                                                                                     |
+| ---- | ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1    | Setup                     | Your copy of the template, running, with a personalized home screen                                      |
+| 2    | React Native fundamentals | A landing screen built from core components (Text, TextInput, Button, ScrollView) and Flexbox layout     |
+| 3    | Navigation and state      | Expo Router stack + tabs, a detail screen that receives route params, `useState`/`useEffect` state       |
+| 4    | User input                | A form with validation that creates items held in state                                                  |
+| 5    | Data and storage          | Supabase as the remote database, TanStack Query for fetching/caching, AsyncStorage for local persistence |
+| 6    | Code quality and testing  | ESLint + Prettier, Husky pre-commit hook, Jest + React Native Testing Library unit tests                 |
 
 Weeks 7–12 are the team project. Your team may start from a fresh copy of this template or from one member's Week 6 repo.
 
@@ -120,15 +120,15 @@ Put components, hooks, and utilities in `src/` next to `app/` (for example `src/
 
 ## 8. Common problems
 
-| Symptom | Fix |
-| --- | --- |
-| `npm install` prints "Use pnpm instead" | Run `pnpm install`. |
-| `pnpm: command not found` | Install pnpm: `npm install -g pnpm`, then reopen the terminal. |
+| Symptom                                          | Fix                                                                                                                          |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `npm install` prints "Use pnpm instead"          | Run `pnpm install`.                                                                                                          |
+| `pnpm: command not found`                        | Install pnpm: `npm install -g pnpm`, then reopen the terminal.                                                               |
 | Expo Go says the project uses an unsupported SDK | Your Expo Go app and this project are on different SDK versions. Update Expo Go from the store, or use a simulator/emulator. |
-| Phone cannot connect / QR code does nothing | Same Wi-Fi network as the computer? Try `pnpm start --tunnel`. |
-| Red error screen after editing | Read the first line of the error. Undo the last change, save, and reapply it in smaller steps. |
-| Weird cache behavior | Stop the server, run `pnpm start --clear`. |
-| Nothing works | Delete `node_modules/`, run `pnpm install`, then `pnpm start --clear`. |
+| Phone cannot connect / QR code does nothing      | Same Wi-Fi network as the computer? Try `pnpm start --tunnel`.                                                               |
+| Red error screen after editing                   | Read the first line of the error. Undo the last change, save, and reapply it in smaller steps.                               |
+| Weird cache behavior                             | Stop the server, run `pnpm start --clear`.                                                                                   |
+| Nothing works                                    | Delete `node_modules/`, run `pnpm install`, then `pnpm start --clear`.                                                       |
 
 ## 9. Getting help
 
@@ -149,15 +149,14 @@ Put components, hooks, and utilities in `src/` next to `app/` (for example `src/
 > **AI tools are learning assistants in this course, not code generators.**
 > Copilot, ChatGPT, Claude, Cursor, and similar tools are welcome for explaining concepts, reviewing code you wrote, helping you read an error, and finding the right docs. They are not allowed to write, complete, or rewrite your code. You write every line, you must be able to explain every line, and you cite significant AI help in your README. Full policy: the course syllabus in Canvas.
 
-| File | What it does |
-| --- | --- |
-| `AGENTS.md` | The rules. Read by Claude Code, Cursor, Codex, Copilot's agent, and others. |
-| `CLAUDE.md` | Loads `AGENTS.md` for Claude Code. |
-| `.github/copilot-instructions.md` | The same rules for Copilot Chat in VS Code. |
-| `.vscode/settings.json` | Turns off Copilot inline completions for this workspace. |
+| File                              | What it does                                                                |
+| --------------------------------- | --------------------------------------------------------------------------- |
+| `AGENTS.md`                       | The rules. Read by Claude Code, Cursor, Codex, Copilot's agent, and others. |
+| `CLAUDE.md`                       | Loads `AGENTS.md` for Claude Code.                                          |
+| `.github/copilot-instructions.md` | The same rules for Copilot Chat in VS Code.                                 |
+| `.vscode/settings.json`           | Turns off Copilot inline completions for this workspace.                    |
 
 If an AI tool starts writing code for you anyway, stop, and ask it to explain instead. That is the tool ignoring the rules, and the grade is still yours.
-
 
 ## 11. Setup
 

@@ -3,7 +3,11 @@
 import { createTrackers } from "@/api/trackers";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
-import { AddTrackerFormValues, TrackerData, trackerSchema } from "@/utils/trackerSchema";
+import {
+  AddTrackerFormValues,
+  TrackerData,
+  trackerSchema,
+} from "@/utils/trackerSchema";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -39,7 +43,15 @@ const fromDateString = (s: string) => {
 };
 
 // Dropdown Options
-const CATEGORY_OPTIONS = ["Mental Health", "Physical Health", "Sleep", "Nutrition", "Fitness", "Medication", "Other"];
+const CATEGORY_OPTIONS = [
+  "Mental Health",
+  "Physical Health",
+  "Sleep",
+  "Nutrition",
+  "Fitness",
+  "Medication",
+  "Other",
+];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
 const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
 const BY_OPTIONS = ["By color", "By text"];
@@ -70,7 +82,15 @@ type SelectProps = {
 };
 
 // Dropdown/Modal list for option selection
-function Select({ value, options, placeholder, onSelect, onClose, hasError, accessibilityLabel }: SelectProps) {
+function Select({
+  value,
+  options,
+  placeholder,
+  onSelect,
+  onClose,
+  hasError,
+  accessibilityLabel,
+}: SelectProps) {
   const c = usePalette();
   const [open, setOpen] = useState(false);
 
@@ -86,7 +106,10 @@ function Select({ value, options, placeholder, onSelect, onClose, hasError, acce
         style={[
           styles.input,
           styles.dateButton,
-          { backgroundColor: c.card, borderColor: hasError ? c.danger : c.border },
+          {
+            backgroundColor: c.card,
+            borderColor: hasError ? c.danger : c.border,
+          },
         ]}
         onPress={() => setOpen(true)}
         accessibilityRole="button"
@@ -99,10 +122,20 @@ function Select({ value, options, placeholder, onSelect, onClose, hasError, acce
         <Ionicons name="chevron-down" size={20} color={c.muted} />
       </Pressable>
 
-{/* Modal showing the list of selectable options */}
-      <Modal visible={open} transparent animationType="fade" onRequestClose={close}>
+      {/* Modal showing the list of selectable options */}
+      <Modal
+        visible={open}
+        transparent
+        animationType="fade"
+        onRequestClose={close}
+      >
         <Pressable style={styles.backdrop} onPress={close}>
-          <View style={[styles.sheet, { backgroundColor: c.card, borderColor: c.border }]}>
+          <View
+            style={[
+              styles.sheet,
+              { backgroundColor: c.card, borderColor: c.border },
+            ]}
+          >
             <FlatList
               data={options}
               keyExtractor={(o) => o}
@@ -164,7 +197,12 @@ function TextField({
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => (
-        <Field label={label} error={error?.message} hint={hint} onPress={() => inputRef.current?.focus()}>
+        <Field
+          label={label}
+          error={error?.message}
+          hint={hint}
+          onPress={() => inputRef.current?.focus()}
+        >
           <TextInput
             ref={inputRef}
             style={[
@@ -252,16 +290,19 @@ export default function AddTracker() {
     onError: (e) => {
       Alert.alert(
         "Save Failed",
-        e instanceof Error ? e.message : "We could not save your tracker. Please try again."
+        e instanceof Error
+          ? e.message
+          : "We could not save your tracker. Please try again.",
       );
     },
   });
 
   // Form hook setup
-  const {
-    control,
-    handleSubmit,
-  } = useForm<AddTrackerFormValues, unknown, TrackerData>({
+  const { control, handleSubmit } = useForm<
+    AddTrackerFormValues,
+    unknown,
+    TrackerData
+  >({
     resolver: zodResolver(trackerSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onTouched",
@@ -291,21 +332,23 @@ export default function AddTracker() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 88 : 0}
     >
-{/* Scrollable form view */}
-      <ScrollView 
+      {/* Scrollable form view */}
+      <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={[styles.form, { backgroundColor: c.background }]}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets={true}
       >
-{/* Active tracker switch */}
+        {/* Active tracker switch */}
         <Controller
           control={control}
           name="active"
           render={({ field: { onChange, value } }) => (
             <View style={styles.switchRow}>
-              <Text style={[styles.label, { color: c.text }]}>Active Tracker</Text>
+              <Text style={[styles.label, { color: c.text }]}>
+                Active Tracker
+              </Text>
               <Switch
                 value={Boolean(value)}
                 onValueChange={onChange}
@@ -316,7 +359,7 @@ export default function AddTracker() {
           )}
         />
 
-{/* Tracker name input */}
+        {/* Tracker name input */}
         <TextField
           control={control}
           name="name"
@@ -324,7 +367,7 @@ export default function AddTracker() {
           placeholder="e.g. Daily Meditation"
         />
 
-{/* Category dropdown */}
+        {/* Category dropdown */}
         <SelectField
           control={control}
           name="category"
@@ -333,7 +376,7 @@ export default function AddTracker() {
           placeholder="Select a category"
         />
 
-{/* Tracker type dropdown */}
+        {/* Tracker type dropdown */}
         <SelectField
           control={control}
           name="type"
@@ -342,7 +385,7 @@ export default function AddTracker() {
           placeholder="Select a type"
         />
 
-{/* Frequency dropdown */}
+        {/* Frequency dropdown */}
         <SelectField
           control={control}
           name="frequency"
@@ -351,7 +394,7 @@ export default function AddTracker() {
           placeholder="Select a frequency"
         />
 
- {/* By dropdown */}
+        {/* By dropdown */}
         <SelectField
           control={control}
           name="by"
@@ -360,7 +403,7 @@ export default function AddTracker() {
           placeholder="Select tracking method"
         />
 
-{/* Goal input */}
+        {/* Goal input */}
         <TextField
           control={control}
           name="goal"
@@ -370,7 +413,7 @@ export default function AddTracker() {
           hint="Target completion rate percentage"
         />
 
-{/* Date picker */}
+        {/* Date picker */}
         <Controller
           control={control}
           name="date"
@@ -401,21 +444,31 @@ export default function AddTracker() {
                 accessibilityLabel="Date, opens calendar"
               >
                 <Text style={{ color: c.text, fontSize: 16 }}>
-                  {value ? fromDateString(value).toLocaleDateString() : "Select Date"}
+                  {value
+                    ? fromDateString(value).toLocaleDateString()
+                    : "Select Date"}
                 </Text>
                 <Ionicons name="calendar-outline" size={20} color={c.muted} />
               </Pressable>
 
               {showDatePicker &&
                 (Platform.OS === "ios" ? (
-                  <View style={[styles.datePickerContainer, { backgroundColor: c.card, borderColor: c.cardBorder}]}>
+                  <View
+                    style={[
+                      styles.datePickerContainer,
+                      { backgroundColor: c.card, borderColor: c.cardBorder },
+                    ]}
+                  >
                     <DateTimePicker
                       value={fromDateString(value || toDateString(new Date()))}
                       mode="date"
                       accentColor={c.primary}
                       themeVariant={c.card === "#00261e" ? "dark" : "light"}
                       display="inline"
-                      onChange={(event: DateTimePickerEvent, selected?: Date) => {
+                      onChange={(
+                        event: DateTimePickerEvent,
+                        selected?: Date,
+                      ) => {
                         if (event.type === "set" && selected) {
                           onChange(toDateString(selected));
                         }
@@ -441,7 +494,7 @@ export default function AddTracker() {
           )}
         />
 
-{/* Notes */}
+        {/* Notes */}
         <TextField
           control={control}
           name="notes"
@@ -452,13 +505,19 @@ export default function AddTracker() {
 
         <Text style={{ color: c.muted }}>* Required</Text>
 
-{/* Save Button */}
+        {/* Save Button */}
         <Pressable
-          style={[styles.save, { backgroundColor: c.primary, borderColor: c.border }]}
+          style={[
+            styles.save,
+            { backgroundColor: c.primary, borderColor: c.border },
+          ]}
           disabled={mutation.isPending}
           onPress={handleSave}
           accessibilityRole="button"
-          accessibilityState={{ disabled: mutation.isPending, busy: mutation.isPending }}
+          accessibilityState={{
+            disabled: mutation.isPending,
+            busy: mutation.isPending,
+          }}
         >
           {mutation.isPending ? <ActivityIndicator color={c.text} /> : null}
           <Text style={[styles.saveText, { color: c.text }]}>
@@ -466,7 +525,7 @@ export default function AddTracker() {
           </Text>
         </Pressable>
       </ScrollView>
-    </KeyboardAvoidingView>  
+    </KeyboardAvoidingView>
   );
 }
 
@@ -495,7 +554,7 @@ function Field({ label, error, hint, onPress, children }: FieldProps) {
       {error ? (
         <Text
           style={[styles.message, { color: c.danger }]}
-          accessibilityRole="alert" 
+          accessibilityRole="alert"
           accessibilityLiveRegion="polite"
         >
           {error}

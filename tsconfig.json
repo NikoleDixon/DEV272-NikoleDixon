@@ -1,20 +1,20 @@
+// tsconfig.json: TypeScript settings, used by `pnpm exec tsc --noEmit` and by
+// VS Code. Comments are allowed in this file.
 {
+  // Start from Expo's recommended settings; only what is below changes them.
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    // Strict checking: catches possibly-undefined values and missing types.
     "strict": true,
+    // Global types to load. TypeScript 6 loads none on its own; "jest" makes
+    // test, expect, and jest known in test files and jest.setup.ts.
+    "types": ["jest"],
+    // Import shortcuts: "@/components/Toggle" means "src/components/Toggle".
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/assets/*": [
-        "./assets/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/assets/*": ["./assets/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+  // Files to check: your code plus the route types Expo Router generates in .expo/.
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

@@ -3,8 +3,7 @@ name: 🧠 Spike (Research Task)
 about: Request a time-boxed research task to investigate a technical question or implementation approach
 title: "[SPIKE] <Research Topic>"
 labels: spike
-assignees: ''
-
+assignees: ""
 ---
 
 ## 🔍 Problem / Question
@@ -43,8 +42,8 @@ _How much time is allotted to this spike? (typically 1–2 days)_
 ## 📘 Resources / Research Starting Points
 
 > Example:
+>
 > - https://reactnative.dev/docs/image
 > - https://github.com/DylanVann/react-native-fast-image
 
 ---
-

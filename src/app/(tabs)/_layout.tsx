@@ -7,80 +7,90 @@ import { Tabs } from "expo-router";
 import { Image, Text, View } from "react-native";
 
 export default function TabLayout() {
-    const c = usePalette();
+  const c = usePalette();
 
-    return (
-        <Tabs screenOptions={{ headerRight: () => <ThemeToggle /> }} >
-            <Tabs.Screen
-                name="index"
-                options={{
-                    title: "Home",
-                    headerTitle: () => (
-                        <View style={{ 
-                            display: "flex",
-                            flexDirection: "row", 
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            }}>
-                            <Image
-                                source={require("@/assets/images/HBJlogo.png")}
-                                style={{ width: 30, height: 30 }}
-                            />
-                            <Text style={{ 
-                                color: c.text, 
-                                fontSize: 14, 
-                                fontWeight: "600",
-                                padding: 10 }}>
-                                Hummingbird Bullet Journal
-                            </Text>
-                        </View>
-                    ),
-                headerTitleAlign: "left",
-                    headerTitleStyle: { color: c.text },
-                    headerStyle: { backgroundColor: c.card },
-                    tabBarActiveTintColor: c.text,
-                    tabBarActiveBackgroundColor: c.primary,
-                    tabBarInactiveBackgroundColor: c.card,
-                    tabBarIcon: ({ size }) => (
-                        <Ionicons name="home-outline" color={c.text} size={size} />
-                    ),
+  return (
+    <Tabs screenOptions={{ headerRight: () => <ThemeToggle /> }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          headerTitle: () => (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("@/assets/images/HBJlogo.png")}
+                style={{ width: 30, height: 30 }}
+              />
+              <Text
+                style={{
+                  color: c.text,
+                  fontSize: 14,
+                  fontWeight: "600",
+                  padding: 10,
                 }}
-            />
-            <Tabs.Screen
-                name="discover"
-                options={{
-                    title: "Discover",
-                    headerTitle: () => (
-                        <View style={{ 
-                            display: "flex",
-                            flexDirection: "row", 
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            }}>
-                            <Image
-                                source={require("@/assets/images/HBJlogo.png")}
-                                style={{ width: 30, height: 30 }}
-                            />
-                            <Text style={{ 
-                                color: c.text, 
-                                fontSize: 14, 
-                                fontWeight: "600", 
-                                padding: 10 }}>
-                                Hummingbird Bullet Journal
-                            </Text>
-                        </View>
-                    ),
-                    headerTitleAlign: "left",
-                    headerTitleStyle: { color: c.text },
-                    headerStyle: { backgroundColor: c.card },
-                    tabBarActiveTintColor: c.text,         
-                    tabBarActiveBackgroundColor: c.primary,
-                    tabBarInactiveBackgroundColor: c.card,         
-                    tabBarIcon: ({ size }) => (
-                        <Ionicons name="search-outline" color={c.text} size={size} />
-                    ),
+              >
+                Hummingbird Bullet Journal
+              </Text>
+            </View>
+          ),
+          headerTitleAlign: "left",
+          headerTitleStyle: { color: c.text },
+          headerStyle: { backgroundColor: c.card },
+          tabBarActiveTintColor: c.text,
+          tabBarActiveBackgroundColor: c.primary,
+          tabBarInactiveBackgroundColor: c.card,
+          tabBarIcon: ({ size }) => (
+            <Ionicons name="home-outline" color={c.text} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="discover"
+        options={{
+          title: "Discover",
+          headerTitle: () => (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("@/assets/images/HBJlogo.png")}
+                style={{ width: 30, height: 30 }}
+              />
+              <Text
+                style={{
+                  color: c.text,
+                  fontSize: 14,
+                  fontWeight: "600",
+                  padding: 10,
                 }}
-            />
-        </Tabs>
-    )
+              >
+                Hummingbird Bullet Journal
+              </Text>
+            </View>
+          ),
+          headerTitleAlign: "left",
+          headerTitleStyle: { color: c.text },
+          headerStyle: { backgroundColor: c.card },
+          tabBarActiveTintColor: c.text,
+          tabBarActiveBackgroundColor: c.primary,
+          tabBarInactiveBackgroundColor: c.card,
+          tabBarIcon: ({ size }) => (
+            <Ionicons name="search-outline" color={c.text} size={size} />
+          ),
+        }}
+      />
+    </Tabs>
+  );
 }

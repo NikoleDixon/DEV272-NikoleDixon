@@ -3,10 +3,10 @@ import { fetchTracker, fetchTrackers } from "@/api/trackers";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTrackers() {
-  return useQuery({ queryKey: ["trackers"],queryFn: fetchTrackers });
+  return useQuery({ queryKey: ["trackers"], queryFn: fetchTrackers });
 }
 
-export function useTracker(id:string) {
+export function useTracker(id: string) {
   return useQuery({
     queryKey: ["trackers", id],
     queryFn: () => fetchTracker(id),

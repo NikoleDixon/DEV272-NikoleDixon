@@ -3,8 +3,7 @@ name: 🐞 Bug Report
 about: Report a bug or unexpected behavior in the app
 title: "[BUG] <Short descriptive title>"
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 ## 🔍 Bug Description
@@ -49,9 +48,8 @@ _List any related issues, features, or pull requests._
 
 _Indicate how this bug is affecting development progress._
 
-- [ ] 🟥 Blocking core functionality  
-- [ ] 🟨 Moderate (some users/features affected)  
+- [ ] 🟥 Blocking core functionality
+- [ ] 🟨 Moderate (some users/features affected)
 - [x] 🟩 Minor (cosmetic or workaround available)
 
 ---
-

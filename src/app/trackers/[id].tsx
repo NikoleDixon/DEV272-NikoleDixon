@@ -25,8 +25,15 @@ export default function TrackerDetail() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const c = usePalette();
-  const { yourtrackers, toggleTracker, getEffectiveTracker } = useYourTrackers();
-  const { data: rawTracker, isPending, isError, error, refetch } = useTracker(id);
+  const { yourtrackers, toggleTracker, getEffectiveTracker } =
+    useYourTrackers();
+  const {
+    data: rawTracker,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useTracker(id);
   const tracker = rawTracker ? getEffectiveTracker(rawTracker) : null;
 
   if (isPending) return <LoadingView />;
