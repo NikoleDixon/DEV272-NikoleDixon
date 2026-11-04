@@ -1,6 +1,7 @@
 // Purpose: Form to create and add a new tracker with validation using React Hook Form and Zod.
 
 import { createTrackers } from "@/api/trackers";
+import { IconPicker } from "@/components/IconPicker";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import {
@@ -21,7 +22,6 @@ import {
   Alert,
   FlatList,
   Keyboard,
-  KeyboardAvoidingView,
   Modal,
   Platform,
   Pressable,
@@ -325,207 +325,214 @@ export default function AddTracker() {
     handleSubmit(onSubmit)();
   };
 
-  // Keyboard adjustments
+  // Form view
   return (
-    <KeyboardAvoidingView
-      style={[styles.flex, { backgroundColor: c.background }]}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 88 : 0}
+    <ScrollView
+      ref={scrollViewRef}
+      style={{ backgroundColor: c.background }}
+      contentContainerStyle={[styles.form, { backgroundColor: c.background }]}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      automaticallyAdjustKeyboardInsets={true}
+      contentInsetAdjustmentBehavior="automatic"
     >
-      {/* Scrollable form view */}
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={[styles.form, { backgroundColor: c.background }]}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        automaticallyAdjustKeyboardInsets={true}
-      >
-        {/* Active tracker switch */}
-        <Controller
-          control={control}
-          name="active"
-          render={({ field: { onChange, value } }) => (
-            <View style={styles.switchRow}>
-              <Text style={[styles.label, { color: c.text }]}>
-                Active Tracker
+      {/* Active tracker switch */}
+      <Controller
+        control={control}
+        name="active"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.switchRow}>
+            <Text style={[styles.label, { color: c.text }]}>
+              Active Tracker
+            </Text>
+            <Switch
+              value={Boolean(value)}
+              onValueChange={onChange}
+              trackColor={{ false: c.border, true: c.primary }}
+              accessibilityLabel="Active Tracker"
+            />
+          </View>
+        )}
+      />
+
+      {/* Tracker name input */}
+      <TextField
+        control={control}
+        name="name"
+        label="Name *"
+        placeholder="e.g. Daily Meditation"
+      />
+
+      {/* Icon picker */}
+      <Controller
+        control={control}
+        name="icon"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.field}>
+            <Text style={[styles.label, { color: c.text }]}>Icon</Text>
+            <IconPicker
+              value={String(value || "happy-outline")}
+              onSelect={onChange}
+            />
+          </View>
+        )}
+      />
+
+      {/* Category dropdown */}
+      <SelectField
+        control={control}
+        name="category"
+        label="Category *"
+        options={CATEGORY_OPTIONS}
+        placeholder="Select a category"
+      />
+
+      {/* Tracker type dropdown */}
+      <SelectField
+        control={control}
+        name="type"
+        label="Type *"
+        options={TYPE_OPTIONS}
+        placeholder="Select a type"
+      />
+
+      {/* Frequency dropdown */}
+      <SelectField
+        control={control}
+        name="frequency"
+        label="Frequency *"
+        options={FREQUENCY_OPTIONS}
+        placeholder="Select a frequency"
+      />
+
+      {/* By dropdown */}
+      <SelectField
+        control={control}
+        name="by"
+        label="By Color or Text *"
+        options={BY_OPTIONS}
+        placeholder="Select tracking method"
+      />
+
+      {/* Goal input */}
+      <TextField
+        control={control}
+        name="goal"
+        label="Goal (1-100) *"
+        placeholder="90"
+        keyboardType="numeric"
+        hint="Target completion rate percentage"
+      />
+
+      {/* Date picker */}
+      <Controller
+        control={control}
+        name="date"
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <Field label="Date *" error={error?.message}>
+            <Pressable
+              style={[
+                styles.input,
+                styles.dateButton,
+                {
+                  backgroundColor: c.card,
+                  borderColor: error ? c.danger : c.border,
+                },
+              ]}
+              onPress={() => {
+                Keyboard.dismiss();
+                setShowDatePicker((open) => {
+                  const next = !open;
+                  if (next) {
+                    setTimeout(() => {
+                      scrollViewRef.current?.scrollToEnd({ animated: true });
+                    }, 150);
+                  }
+                  return next;
+                });
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Date, opens calendar"
+            >
+              <Text style={{ color: c.text, fontSize: 16 }}>
+                {value
+                  ? fromDateString(value).toLocaleDateString()
+                  : "Select Date"}
               </Text>
-              <Switch
-                value={Boolean(value)}
-                onValueChange={onChange}
-                trackColor={{ false: c.border, true: c.primary }}
-                accessibilityLabel="Active Tracker"
-              />
-            </View>
-          )}
-        />
+              <Ionicons name="calendar-outline" size={20} color={c.muted} />
+            </Pressable>
 
-        {/* Tracker name input */}
-        <TextField
-          control={control}
-          name="name"
-          label="Name *"
-          placeholder="e.g. Daily Meditation"
-        />
-
-        {/* Category dropdown */}
-        <SelectField
-          control={control}
-          name="category"
-          label="Category *"
-          options={CATEGORY_OPTIONS}
-          placeholder="Select a category"
-        />
-
-        {/* Tracker type dropdown */}
-        <SelectField
-          control={control}
-          name="type"
-          label="Type *"
-          options={TYPE_OPTIONS}
-          placeholder="Select a type"
-        />
-
-        {/* Frequency dropdown */}
-        <SelectField
-          control={control}
-          name="frequency"
-          label="Frequency *"
-          options={FREQUENCY_OPTIONS}
-          placeholder="Select a frequency"
-        />
-
-        {/* By dropdown */}
-        <SelectField
-          control={control}
-          name="by"
-          label="By Color or Text *"
-          options={BY_OPTIONS}
-          placeholder="Select tracking method"
-        />
-
-        {/* Goal input */}
-        <TextField
-          control={control}
-          name="goal"
-          label="Goal (1-100) *"
-          placeholder="90"
-          keyboardType="numeric"
-          hint="Target completion rate percentage"
-        />
-
-        {/* Date picker */}
-        <Controller
-          control={control}
-          name="date"
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <Field label="Date *" error={error?.message}>
-              <Pressable
-                style={[
-                  styles.input,
-                  styles.dateButton,
-                  {
-                    backgroundColor: c.card,
-                    borderColor: error ? c.danger : c.border,
-                  },
-                ]}
-                onPress={() => {
-                  Keyboard.dismiss();
-                  setShowDatePicker((open) => {
-                    const next = !open;
-                    if (next) {
-                      setTimeout(() => {
-                        scrollViewRef.current?.scrollToEnd({ animated: true });
-                      }, 150);
-                    }
-                    return next;
-                  });
-                }}
-                accessibilityRole="button"
-                accessibilityLabel="Date, opens calendar"
-              >
-                <Text style={{ color: c.text, fontSize: 16 }}>
-                  {value
-                    ? fromDateString(value).toLocaleDateString()
-                    : "Select Date"}
-                </Text>
-                <Ionicons name="calendar-outline" size={20} color={c.muted} />
-              </Pressable>
-
-              {showDatePicker &&
-                (Platform.OS === "ios" ? (
-                  <View
-                    style={[
-                      styles.datePickerContainer,
-                      { backgroundColor: c.card, borderColor: c.cardBorder },
-                    ]}
-                  >
-                    <DateTimePicker
-                      value={fromDateString(value || toDateString(new Date()))}
-                      mode="date"
-                      accentColor={c.primary}
-                      themeVariant={c.card === "#00261e" ? "dark" : "light"}
-                      display="inline"
-                      onChange={(
-                        event: DateTimePickerEvent,
-                        selected?: Date,
-                      ) => {
-                        if (event.type === "set" && selected) {
-                          onChange(toDateString(selected));
-                        }
-                      }}
-                    />
-                  </View>
-                ) : (
+            {showDatePicker &&
+              (Platform.OS === "ios" ? (
+                <View
+                  style={[
+                    styles.datePickerContainer,
+                    { backgroundColor: c.card, borderColor: c.cardBorder },
+                  ]}
+                >
                   <DateTimePicker
                     value={fromDateString(value || toDateString(new Date()))}
                     mode="date"
-                    display="default"
-                    positiveButton={{ label: "OK", textColor: c.primary }}
-                    negativeButton={{ label: "Cancel", textColor: c.muted }}
+                    accentColor={c.primary}
+                    themeVariant={c.card === "#00261e" ? "dark" : "light"}
+                    display="inline"
                     onChange={(event: DateTimePickerEvent, selected?: Date) => {
-                      setShowDatePicker(false);
                       if (event.type === "set" && selected) {
                         onChange(toDateString(selected));
                       }
                     }}
                   />
-                ))}
-            </Field>
-          )}
-        />
+                </View>
+              ) : (
+                <DateTimePicker
+                  value={fromDateString(value || toDateString(new Date()))}
+                  mode="date"
+                  display="default"
+                  positiveButton={{ label: "OK", textColor: c.primary }}
+                  negativeButton={{ label: "Cancel", textColor: c.muted }}
+                  onChange={(event: DateTimePickerEvent, selected?: Date) => {
+                    setShowDatePicker(false);
+                    if (event.type === "set" && selected) {
+                      onChange(toDateString(selected));
+                    }
+                  }}
+                />
+              ))}
+          </Field>
+        )}
+      />
 
-        {/* Notes */}
-        <TextField
-          control={control}
-          name="notes"
-          label="Notes"
-          placeholder="Details about this Tracker"
-          multiline
-        />
+      {/* Notes */}
+      <TextField
+        control={control}
+        name="notes"
+        label="Notes"
+        placeholder="Details about this Tracker"
+        multiline
+      />
 
-        <Text style={{ color: c.muted }}>* Required</Text>
+      <Text style={{ color: c.muted }}>* Required</Text>
 
-        {/* Save Button */}
-        <Pressable
-          style={[
-            styles.save,
-            { backgroundColor: c.primary, borderColor: c.border },
-          ]}
-          disabled={mutation.isPending}
-          onPress={handleSave}
-          accessibilityRole="button"
-          accessibilityState={{
-            disabled: mutation.isPending,
-            busy: mutation.isPending,
-          }}
-        >
-          {mutation.isPending ? <ActivityIndicator color={c.text} /> : null}
-          <Text style={[styles.saveText, { color: c.text }]}>
-            {mutation.isPending ? "Saving..." : "Save"}
-          </Text>
-        </Pressable>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      {/* Save Button */}
+      <Pressable
+        style={[
+          styles.save,
+          { backgroundColor: c.primary, borderColor: c.border },
+        ]}
+        disabled={mutation.isPending}
+        onPress={handleSave}
+        accessibilityRole="button"
+        accessibilityState={{
+          disabled: mutation.isPending,
+          busy: mutation.isPending,
+        }}
+      >
+        {mutation.isPending ? <ActivityIndicator color={c.text} /> : null}
+        <Text style={[styles.saveText, { color: c.text }]}>
+          {mutation.isPending ? "Saving..." : "Save"}
+        </Text>
+      </Pressable>
+    </ScrollView>
   );
 }
 

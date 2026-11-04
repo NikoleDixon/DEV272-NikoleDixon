@@ -1,6 +1,7 @@
 // Purpose: Edit an existing tracker or journal with pre-populated form fields and local deletion.
 
 import { ErrorView, LoadingView } from "@/components/StatusViews";
+import { IconPicker } from "@/components/IconPicker";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
@@ -527,6 +528,21 @@ function EditTrackerForm({
             label="Name *"
             placeholder="e.g. Sleep, Water, Mood"
             hint="At least 2 characters"
+          />
+
+          {/* Icon picker */}
+          <Controller
+            control={control}
+            name="icon"
+            render={({ field: { onChange, value } }) => (
+              <View style={styles.field}>
+                <Text style={[styles.label, { color: c.text }]}>Icon</Text>
+                <IconPicker
+                  value={String(value || tracker.icon || "happy-outline")}
+                  onSelect={onChange}
+                />
+              </View>
+            )}
           />
 
           {/* Category Dropdown */}
