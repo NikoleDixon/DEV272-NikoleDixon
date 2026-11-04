@@ -6,8 +6,6 @@ export type Tracker = {
   name: string;
   category: string;
   type: string;
-  frequency: string;
-  by: string;
   date: string;
   goal: number;
   icon: string;

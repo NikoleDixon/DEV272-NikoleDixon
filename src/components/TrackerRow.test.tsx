@@ -23,8 +23,6 @@ describe("TrackerRow", () => {
     name: "Sleep Tracker",
     category: "Physical Health",
     type: "Tracker",
-    frequency: "Daily",
-    by: "By color",
     date: "2026-11-02",
     goal: 90,
     icon: "moon-outline",
@@ -45,7 +43,7 @@ describe("TrackerRow", () => {
 
     // Name is on screen
     expect(await screen.findByText("Sleep Tracker")).toBeOnTheScreen();
-    expect(screen.getByText("Daily")).toBeOnTheScreen();
+    expect(screen.getByText("Physical Health")).toBeOnTheScreen();
 
     // Press the row
     await user.press(screen.getByText("Sleep Tracker"));

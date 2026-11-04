@@ -19,8 +19,6 @@ export const trackerSchema = z.object({
 
   category: z.string().min(1, "Category is required."),
   type: z.string().min(1, "Type is required."),
-  frequency: z.string().min(1, "Frequency is required."),
-  by: z.string().min(1, "By is required."),
 
   date: z
     .string()

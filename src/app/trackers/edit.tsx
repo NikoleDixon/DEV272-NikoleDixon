@@ -1,7 +1,7 @@
 // Purpose: Edit an existing tracker or journal with pre-populated form fields and local deletion.
 
-import { ErrorView, LoadingView } from "@/components/StatusViews";
 import { IconPicker } from "@/components/IconPicker";
+import { ErrorView, LoadingView } from "@/components/StatusViews";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
@@ -54,8 +54,6 @@ const CATEGORY_OPTIONS = [
   "Other",
 ];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
-const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
-const BY_OPTIONS = ["By color", "By text"];
 
 // Dropdown Select component
 type SelectProps = {
@@ -379,8 +377,6 @@ export default function EditTracker() {
           name: data.name,
           category: data.category,
           type: data.type,
-          frequency: data.frequency,
-          by: data.by,
           date: data.date,
           goal: Number(data.goal),
           icon: data.icon || tracker.icon || "happy-outline",
@@ -438,8 +434,6 @@ function EditTrackerForm({
       name: tracker.name ?? "",
       category: tracker.category ?? "",
       type: tracker.type ?? "Tracker",
-      frequency: tracker.frequency ?? "Daily",
-      by: tracker.by ?? "By color",
       date: tracker.date ?? toDateString(new Date()),
       goal: tracker.goal !== undefined ? String(tracker.goal) : "90",
       icon: tracker.icon ?? "happy-outline",
@@ -563,32 +557,14 @@ function EditTrackerForm({
             placeholder="Select a type"
           />
 
-          {/* Frequency Dropdown */}
-          <SelectField
-            control={control}
-            name="frequency"
-            label="Frequency *"
-            options={FREQUENCY_OPTIONS}
-            placeholder="Select a frequency"
-          />
-
-          {/* By Dropdown */}
-          <SelectField
-            control={control}
-            name="by"
-            label="By *"
-            options={BY_OPTIONS}
-            placeholder="Select a tracking method"
-          />
-
           {/* Goal Numeric Input */}
           <TextField
             control={control}
             name="goal"
-            label="Goal (%) *"
+            label="Goal (1-100%) *"
             placeholder="e.g. 90"
             keyboardType="numeric"
-            hint="Between 1 and 100"
+            hint="Target monthly completion percentage"
           />
 
           {/* Date Picker */}
@@ -596,7 +572,7 @@ function EditTrackerForm({
             control={control}
             name="date"
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <Field label="Date *" error={error?.message}>
+              <Field label="Start Date *" error={error?.message}>
                 <Pressable
                   style={[
                     styles.input,
@@ -708,7 +684,7 @@ function EditTrackerForm({
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* Delete Confirmation Modal (exact modal reused from ID screen) */}
+      {/* Delete Confirmation Modal */}
       <Modal
         visible={showDeleteModal}
         transparent

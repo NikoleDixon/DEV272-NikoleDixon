@@ -18,8 +18,10 @@ export async function saveJson<T>(key: string, value: T): Promise<void> {
   }
 }
 
-// Version the key: when the shape changes, bump it instead of migrating.
+// Version the key: when the shape changes
 export const STORAGE_KEYS = {
   yourTrackers: "yourTrackers.v1",
   trackerOverrides: "trackerOverrides.v1",
+  trackerLegends: "trackerLegends.v2",
+  trackerEntries: "trackerEntries.v2",
 } as const;

@@ -53,16 +53,12 @@ const CATEGORY_OPTIONS = [
   "Other",
 ];
 const TYPE_OPTIONS = ["Tracker", "Journal"];
-const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly", "Yearly"];
-const BY_OPTIONS = ["By color", "By text"];
 
 // Defaults for each value
 const DEFAULT_VALUES: AddTrackerFormValues = {
   name: "",
   category: "",
   type: "",
-  frequency: "",
-  by: "",
   date: toDateString(new Date()),
   goal: "90",
   icon: "ellipsis-vertical-outline",
@@ -361,6 +357,7 @@ export default function AddTracker() {
         name="name"
         label="Name *"
         placeholder="e.g. Daily Meditation"
+        hint="At least 2 characters"
       />
 
       {/* Icon picker */}
@@ -396,32 +393,14 @@ export default function AddTracker() {
         placeholder="Select a type"
       />
 
-      {/* Frequency dropdown */}
-      <SelectField
-        control={control}
-        name="frequency"
-        label="Frequency *"
-        options={FREQUENCY_OPTIONS}
-        placeholder="Select a frequency"
-      />
-
-      {/* By dropdown */}
-      <SelectField
-        control={control}
-        name="by"
-        label="By Color or Text *"
-        options={BY_OPTIONS}
-        placeholder="Select tracking method"
-      />
-
       {/* Goal input */}
       <TextField
         control={control}
         name="goal"
-        label="Goal (1-100) *"
+        label="Goal (1-100%) *"
         placeholder="90"
         keyboardType="numeric"
-        hint="Target completion rate percentage"
+        hint="Target monthly completion percentage"
       />
 
       {/* Date picker */}
@@ -429,7 +408,7 @@ export default function AddTracker() {
         control={control}
         name="date"
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Field label="Date *" error={error?.message}>
+          <Field label="Start Date *" error={error?.message}>
             <Pressable
               style={[
                 styles.input,

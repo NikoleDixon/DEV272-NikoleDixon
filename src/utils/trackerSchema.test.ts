@@ -9,8 +9,6 @@ const valid: AddTrackerFormValues = {
   name: "Sleep Tracker",
   category: "Physical Health",
   type: "Tracker",
-  frequency: "Daily",
-  by: "By color",
   date: "2026-11-02",
   goal: "90",
   icon: "moon-outline",

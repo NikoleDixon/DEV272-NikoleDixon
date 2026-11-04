@@ -34,9 +34,7 @@ export function TrackerRow({ tracker }: { tracker: Tracker }) {
           {item.type}
         </Text>
       </View>
-      <Text style={[styles.frequency, { color: c.muted }]}>
-        {item.frequency}
-      </Text>
+      <Text style={[styles.category, { color: c.muted }]}>{item.category}</Text>
     </Pressable>
   );
 }
@@ -64,5 +62,5 @@ const styles = StyleSheet.create({
   cardMain: { flex: 1, gap: 2 },
   cardTitle: { fontWeight: "600", marginBottom: 4, fontSize: 18 },
   cardSubtitle: { fontSize: 14 },
-  frequency: { fontSize: 14, fontWeight: "500" },
+  category: { fontSize: 14, fontWeight: "500" },
 });

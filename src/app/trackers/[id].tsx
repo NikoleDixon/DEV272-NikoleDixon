@@ -1,15 +1,16 @@
 // Purpose: Individual Tracker view. Shows all data for tracker selected.
-// Issue: The tabs are not showing at the bottom.
-// Issue: the light/dark toggle is not showing.
-// Future: add in by day tracking with modal/other for different options
+// Issue: the light/dark toggle is not showing - andoid.
+// Future: add in by day tracking with modal/other for different options - more work needs to be added
 
 import { ErrorView, LoadingView } from "@/components/StatusViews";
 import ThemeToggle from "@/components/ThemeToggle";
+import { TrackerMonthView } from "@/components/TrackerMonthView";
 import { useYourTrackers } from "@/context/YourTrackersContext";
 import { usePalette } from "@/hooks/usePalette";
 import { useTracker } from "@/hooks/useTrackers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -25,6 +26,7 @@ export default function TrackerDetail() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const c = usePalette();
+  const [viewTab, setViewTab] = useState<"year" | "month" | "week">("month");
   const { yourtrackers, toggleTracker, getEffectiveTracker } =
     useYourTrackers();
   const {
@@ -119,14 +121,31 @@ export default function TrackerDetail() {
             { backgroundColor: c.card, borderColor: c.cardBorder },
           ]}
         >
-          {/* Header with badges on left, edit & delete buttons on right */}
+          {/* Header with badges on left, edit button on right */}
           <View style={styles.header}>
             <View style={styles.badgeGroup}>
+              {/* Type Badge */}
               <View style={[styles.badge, { backgroundColor: c.primary }]}>
                 <Text style={[styles.badgeText, { color: c.background }]}>
                   {tracker.type}
                 </Text>
               </View>
+
+              {/* Category Badge with Icon */}
+              {tracker.category ? (
+                <View style={[styles.badge, { backgroundColor: c.primary }]}>
+                  <Ionicons
+                    name="medkit-outline"
+                    size={14}
+                    color={c.background}
+                  />
+                  <Text style={[styles.badgeText, { color: c.background }]}>
+                    {tracker.category}
+                  </Text>
+                </View>
+              ) : null}
+
+              {/* Active/Inactive Badge */}
               <View
                 style={[
                   styles.badge,
@@ -160,6 +179,29 @@ export default function TrackerDetail() {
             </View>
           </View>
 
+          {/* Date & Goal Info Row*/}
+          {(tracker.date || tracker.goal !== undefined) && (
+            <View style={styles.infoRow}>
+              {tracker.date ? (
+                <View style={styles.infoItem}>
+                  <Ionicons name="calendar-outline" size={16} color={c.muted} />
+                  <Text style={[styles.infoText, { color: c.muted }]}>
+                    {tracker.date}
+                  </Text>
+                </View>
+              ) : null}
+
+              {tracker.goal !== undefined ? (
+                <View style={styles.infoItem}>
+                  <Ionicons name="flag-outline" size={16} color={c.muted} />
+                  <Text style={[styles.infoText, { color: c.muted }]}>
+                    Goal: {tracker.goal}%
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          )}
+
           {/* Active Tracker Switch */}
           <View style={styles.switchRow}>
             <Text style={[styles.switchLabel, { color: c.text }]}>
@@ -173,54 +215,76 @@ export default function TrackerDetail() {
             />
           </View>
 
-          {/* Tracker Information with frequency, category, by, date, goal and notes */}
-          <View style={styles.infoRow}>
-            <Ionicons
-              name="calendar-number-outline"
-              size={18}
-              color={c.muted}
-            />
-            <Text style={[styles.infoText, { color: c.muted }]}>
-              {tracker.frequency}
-            </Text>
-
-            <Ionicons name="medkit-outline" size={18} color={c.muted} />
-            <Text style={[styles.infoText, { color: c.muted }]}>
-              {tracker.category}
-            </Text>
-
-            <Ionicons name="color-palette-outline" size={18} color={c.muted} />
-            <Text style={[styles.infoText, { color: c.muted }]}>
-              {tracker.by}
-            </Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            {tracker.date ? (
-              <>
-                <Ionicons name="calendar-outline" size={18} color={c.muted} />
-                <Text style={[styles.infoText, { color: c.muted }]}>
-                  {tracker.date}
-                </Text>
-              </>
-            ) : null}
-
-            {tracker.goal !== undefined ? (
-              <>
-                <Ionicons name="flag-outline" size={18} color={c.muted} />
-                <Text style={[styles.infoText, { color: c.muted }]}>
-                  Goal: {tracker.goal}%
-                </Text>
-              </>
-            ) : null}
-          </View>
-
-          <View style={[styles.divider, { backgroundColor: c.cardBorder }]} />
-
-          {tracker.notes && (
+          {tracker.notes ? (
             <Text style={[styles.notes, { color: c.text }]}>
               Notes: {tracker.notes}
             </Text>
+          ) : null}
+
+          {/* 3 Tabs: Year | Month | Week */}
+          <View style={[styles.tabBar, { borderBottomColor: c.border }]}>
+            {(["year", "month", "week"] as const).map((tab) => {
+              const isActiveTab = viewTab === tab;
+              const label = tab.charAt(0).toUpperCase() + tab.slice(1);
+              return (
+                <Pressable
+                  key={tab}
+                  style={[
+                    styles.tabButton,
+                    isActiveTab && {
+                      backgroundColor: c.primary,
+                    },
+                  ]}
+                  onPress={() => setViewTab(tab)}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: isActiveTab }}
+                  accessibilityLabel={`${label} view`}
+                >
+                  <Text
+                    style={[
+                      styles.tabText,
+                      {
+                        color: isActiveTab ? "#ffffff" : c.muted,
+                        fontWeight: isActiveTab ? "700" : "500",
+                      },
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          {/* Tab Content */}
+          {viewTab === "month" && <TrackerMonthView trackerId={tracker.id} />}
+
+          {viewTab === "year" && (
+            <View style={styles.placeholderView}>
+              <Ionicons name="calendar-outline" size={36} color={c.primary} />
+              <Text style={[styles.placeholderTitle, { color: c.text }]}>
+                Year View
+              </Text>
+              <Text style={[styles.placeholderText, { color: c.muted }]}>
+                Full-year tracking under construction.
+              </Text>
+            </View>
+          )}
+
+          {viewTab === "week" && (
+            <View style={styles.placeholderView}>
+              <Ionicons
+                name="calendar-number-outline"
+                size={36}
+                color={c.primary}
+              />
+              <Text style={[styles.placeholderTitle, { color: c.text }]}>
+                Week View
+              </Text>
+              <Text style={[styles.placeholderText, { color: c.muted }]}>
+                Weekly habit breakdown under construction.
+              </Text>
+            </View>
           )}
         </View>
       </ScrollView>
@@ -263,11 +327,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   badgeGroup: {
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: 6,
     alignItems: "center",
+    flex: 1,
   },
   badgeText: {
     fontSize: 14,
@@ -306,6 +375,12 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 16,
+    paddingVertical: 2,
+  },
+  infoItem: {
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   infoText: {
@@ -328,5 +403,36 @@ const styles = StyleSheet.create({
   switchLabel: {
     fontSize: 15,
     fontWeight: "600",
+  },
+  tabBar: {
+    flexDirection: "row",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingBottom: 4,
+    marginBottom: 8,
+    gap: 8,
+  },
+  tabButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  tabText: {
+    fontSize: 15,
+  },
+  placeholderView: {
+    paddingVertical: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  placeholderTitle: {
+    fontSize: 17,
+    fontWeight: "700",
+  },
+  placeholderText: {
+    fontSize: 14,
+    textAlign: "center",
   },
 });

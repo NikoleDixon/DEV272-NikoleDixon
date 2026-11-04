@@ -186,8 +186,6 @@ create table public.trackers (
     'Fitness', 'Medication', 'Other'
   )),
   type text not null check (type in ('Tracker', 'Journal')),
-  frequency text not null check (frequency in ('Daily', 'Weekly', 'Monthly', 'Yearly')),
-  by text not null check (by in ('By color', 'With text', 'By text')),
   date date not null default current_date,
   goal integer not null default 90 check (goal >= 1 and goal <= 100),
   icon text not null default 'ellipse-outline',
@@ -213,15 +211,15 @@ create policy "Anyone can add trackers"
   with check (true);
 
 -- 5. Insert seed rows
-insert into public.trackers (name, category, type, frequency, by, goal, icon, active, notes) values
-  ('Mood', 'Mental Health', 'Tracker', 'Yearly', 'By color', 90, 'happy-outline', true, 'Mood Note'),
-  ('Energy', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'flash-outline', true, 'Energy Note'),
-  ('Sleep', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'moon-outline', true, 'Sleep Note'),
-  ('Habits', 'Physical Health', 'Tracker', 'Monthly', 'By color', 90, 'checkmark-circle-outline', true, 'Habits Note'),
-  ('Highlight of the day', 'Mental Health', 'Journal', 'Monthly', 'With text', 90, 'star-outline', true, 'Highlight Note'),
-  ('Gratitude Journal', 'Mental Health', 'Journal', 'Monthly', 'With text', 90, 'heart-outline', true, 'Gratitude Note'),
-  ('Water', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'water-outline', true, 'Water Note'),
-  ('Exercise', 'Physical Health', 'Tracker', 'Yearly', 'By color', 90, 'barbell-outline', true, 'Exercise Note');
+insert into public.trackers (name, category, type, goal, icon, active, notes) values
+  ('Mood', 'Mental Health', 'Tracker', 90, 'happy-outline', true, 'Mood Note'),
+  ('Energy', 'Physical Health', 'Tracker', 90, 'flash-outline', true, 'Energy Note'),
+  ('Sleep', 'Physical Health', 'Tracker', 90, 'moon-outline', true, 'Sleep Note'),
+  ('Habits', 'Physical Health', 'Tracker', 90, 'checkmark-circle-outline', true, 'Habits Note'),
+  ('Highlight of the day', 'Mental Health', 'Journal', 90, 'star-outline', true, 'Highlight Note'),
+  ('Gratitude Journal', 'Mental Health', 'Journal', 90, 'heart-outline', true, 'Gratitude Note'),
+  ('Water', 'Physical Health', 'Tracker', 90, 'water-outline', true, 'Water Note'),
+  ('Exercise', 'Physical Health', 'Tracker', 90, 'barbell-outline', true, 'Exercise Note');
 ```
 
 ### 3. How to Run
